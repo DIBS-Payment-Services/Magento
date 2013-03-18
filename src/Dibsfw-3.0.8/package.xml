@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<package>
+    <name>Dibsfw</name>
+    <version>3.0.8</version>
+    <stability>stable</stability>
+    <license>Open Software License (OSL)</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Accept all types of payments from DIBS - Secure Internet Payment Service Provider.&#xD;
+Module for FlexWin integration.</summary>
+    <description>This is the payment gateway module for the DIBS payment gateway - http://www.dibspayment.com&#xD;
+&#xD;
+DIBS Payment Services is the leading Scandinavian Internet service provider.&#xD;
+&#xD;
+Security and credibility are important keywords to companies handling payment transactions. Hence, DIBS has achieved VISA/MasterCard PCI certification and devotes its efforts to constantly enhancing its security  solutions.&#xD;
+&#xD;
+Card types accepted by the DIBS payment gateway:&#xD;
+- Dankort&#xD;
+- VISA/Dankort&#xD;
+- VISA&#xD;
+- VISA Electron&#xD;
+- MasterCard&#xD;
+- Maestro&#xD;
+- JCB&#xD;
+- Diners&#xD;
+- American Express&#xD;
+- Forbrugsforeningen&#xD;
+- eWire&#xD;
+- VISA 3D Secure&#xD;
+- MaserCard 3D secure&#xD;
+- JCB 3D secure&#xD;
+- Danske Bank e-betaling&#xD;
+- Nordea e-betaling&#xD;
+&#xD;
+A complete list can be found at http://www.dibspayment.com/</description>
+    <notes>3.0.8&#xD;
+- Added compilation mode support&#xD;
+3.0.7&#xD;
+- Fixed bug with uniqueoid&#xD;
+3.0.6&#xD;
+- Removed protected Magento statuses from module configuration page (Closed, Completed)&#xD;
+- Fixed possible problems running extension on Windows-hosted Magento&#xD;
+- Page after cancel operation changed to orders list (instead of empty cart)&#xD;
+&#xD;
+3.0.5&#xD;
+- Hotfix for amount bug in invoice paytypes&#xD;
+- Minor improvements&#xD;
+&#xD;
+3.0.4&#xD;
+- Confirmed compatibility with Magento 1.7.*&#xD;
+- Improved stability by using more low-level Magento API integration&#xD;
+- Improved compatibility with DIBS invoice payments&#xD;
+- Added option to limit payment method usage by countries&#xD;
+- Added Transaction ID to order confirmation mail&#xD;
+&#xD;
+3.0.3&#xD;
+- Fixed error on redirect with expired session&#xD;
+- Fixed CGI API empty credentials error in multistore mode&#xD;
+- 302 response on callback resolved&#xD;
+- Improved compatibility with DIBS Payment Window Magento extension&#xD;
+- A lot of minor improvements&#xD;
+&#xD;
+3.0.2&#xD;
+- Fixed order statuses bug&#xD;
+- Fixed account parameter bugs&#xD;
+- Fixed layout&#xD;
+- Fixed CGI api account parameter bug&#xD;
+- Fixed crash on dibs_order_data table remove&#xD;
+- Fixed logo appearance bugs&#xD;
+- Fixed bug with message appearance in inappropriate places&#xD;
+- Added Sort Order option&#xD;
+- A lot of other fixes and improvements&#xD;
+&#xD;
+3.0.1&#xD;
+- Fixed a lot of bugs in calculations for invoice paytype. &#xD;
+- Fixed bugs with spical unicode symbols. E.g.: specific letters in Scandinavian alphabets. &#xD;
+- Magento 1.6 compatibility. &#xD;
+&#xD;
+3.0.0&#xD;
+- Separate modules for new and old integration method (FlexWin and Payment Windows). &#xD;
+- New module code logic. &#xD;
+- Total code refactoring. &#xD;
+- Old Payment Window pay type removed. &#xD;
+- Vouchers support added. &#xD;
+- CGI API support added. &#xD;
+- Now module use mysql table prefix if it used by Magento installation. &#xD;
+- Fixed bug with module installation crash because of prefix in names of Magento mysql tables. &#xD;
+- Fixed bug with empty list of modules in Magento Connect Manager. &#xD;
+- Fixed inner versions mishmash in module.</notes>
+    <authors><author><name>DIBS A/S</name><user>niso</user><email>info@dibs.dk</email></author></authors>
+    <date>2012-12-20</date>
+    <time>12:59:51</time>
+    <contents><target name="magecommunity"><dir name="Dibsfw"><dir name="Dibsfw"><dir name="Block"><file name="Failure.php" hash="d48e36da81237e53e368af551c244991"/><file name="Form.php" hash="635551ccccc8b632d67ef409eef4918f"/><file name="Info.php" hash="4ad09f518e72f1b501bc2fa37ce8dcd4"/><file name="Redirect.php" hash="5016f7871397797d5a4b257b4ccbb591"/></dir><dir name="Helper"><file name="Data.php" hash="31fe78b4c42a76c24037b68459cd96fa"/></dir><dir name="Model"><file name="Dibsfw.php" hash="b1b54a82c41b5588e26bc76e6308df13"/><dir name="Mysql4"><file name="Setup.php" hash="19937fb4d3bbee547cd873a84fecd594"/></dir><dir name="System"><dir name="Config"><dir name="Source"><file name="Color.php" hash="fbd1e00571817357daf2213673c6ba74"/><file name="Decorator.php" hash="838d04187968cf8233aff98cbac37887"/><file name="Dibslogos.php" hash="03e90222d618abbe440848093eac1696"/><file name="Dibspaytypes.php" hash="530ed75813e0314c5ef2bf170852f157"/><file name="Dibsyesno.php" hash="840fe4155996602557734d17b48afe86"/><file name="Lang.php" hash="0bf1d4f8b623f1c80fcee82af2158c69"/><file name="Orderstatusafter.php" hash="7665a818c33b6639f1f67bfd5c863f85"/><file name="Orderstatusbefore.php" hash="af928db0e9c33feb9cf742a3dfb5129c"/><file name="PBBdistribution.php" hash="8c40316d48738da5d8c1eacaa00f8136"/></dir></dir></dir><dir name="dibs_api"><dir name="fw"><file name="dibs_fw_api.php" hash="72f96a6301b333162fedbf312bf60a59"/><file name="dibs_fw_helpers.php" hash="ebe11936cd606cf5178662a59228d660"/><file name="dibs_fw_helpers_cms.php" hash="2c2fd4a9d4cac46fcd62ca11062eff14"/><file name="dibs_fw_helpers_interface.php" hash="8bb1736bf0bb4b346366a2803ff2bedb"/></dir></dir></dir><dir name="controllers"><file name="DibsfwController.php" hash="a3bac48efdf7a1f168eaedea7f30e005"/></dir><dir name="etc"><file name="config.xml" hash="2514c7b1c43731d8eb890dd37da6937c"/><file name="system.xml" hash="70ffe13f4d40e8260b00c3c0d02e186c"/></dir><dir name="sql"><dir name="dibsfw_setup"><file name="mysql4-install-3.0.8.php" hash="7a382dbd320738649558f7c89ee2b43a"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="dibsfw"><dir name="dibsfw"><file name="failure.phtml" hash="242677a95fc3df565917a34a80c2ddf8"/><file name="form.phtml" hash="de51ed42069da90330a1aa3f67de25fe"/><file name="redirect.phtml" hash="df3e7a3e0d1b82a92a79f02cd1dae235"/></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Dibsfw_Dibsfw.xml" hash="bc221266b26b5108fdfbbe5e35148065"/></dir></target><target name="magelocale"><dir name="en_US"><file name="Mage_Dibsfw.csv" hash="d7b978d4b00d806f8f49eee974253c2c"/></dir><dir name="da_DK"><file name="Mage_Dibsfw.csv" hash="94ce4f41393b8b429be9bb7acc1334ba"/></dir><dir name="nb_NO"><file name="Mage_Dibsfw.csv" hash="5dd3280b30b789f32844dcb757222cc8"/></dir><dir name="sv_SE"><file name="Mage_Dibsfw.csv" hash="b2e9d973b7aee6ff869f36b1a9dd7648"/></dir><dir name="nn_NO"><file name="Mage_Dibsfw.csv" hash="5dd3280b30b789f32844dcb757222cc8"/></dir></target><target name="mageskin"><dir name="adminhtml"><dir name="base"><dir name="default"><dir name="images"><dir name="Dibsfw"><dir name="Dibsfw"><file name="aktia.gif" hash="7afe00b19b4194fa4ffbdf20cdd469c1"/><file name="amex.gif" hash="f35f89ccdcb954e02a07f6c0a29c7b43"/><file name="bax.gif" hash="c315574fd839dae52a1316b6d8b836b6"/><file name="dibs.gif" hash="8b308757472fc5aaaedfefd5c79a2d54"/><file name="din.gif" hash="fabce04659a94993a230285b9a4651e9"/><file name="dk.gif" hash="daa5d5d2c0d541579b0e13aa3cd9d65b"/><file name="dnb.gif" hash="1f616c382b72248334f6aa1ca910003b"/><file name="edk.gif" hash="4485910a0fb40512233c1a59ddd31015"/><file name="elec.gif" hash="e5371ba0da9bb14990d1b8163cedd066"/><file name="elv.gif" hash="3bd20355343bd250a6a704fdbaf9ba62"/><file name="ew.gif" hash="b50385f7d878be6a3834310d1fbc3a1d"/><file name="ffk.gif" hash="d9cd7fa26230a850114b2dc99aea3b22"/><file name="fsb.gif" hash="d6da3e67f8096811c2ad0135b2aad80a"/><file name="git.gif" hash="b70e244f36e7aec94fe3f6373e1ae8d7"/><file name="ing.gif" hash="40f07b266bcd5953bb6c079f7eeaae67"/><file name="jcb.gif" hash="aea8c54e043a75b26887fa1307ad4312"/><file name="jcbsecure.gif" hash="1c687214f79b73d7e99f5011c9c22bce"/><file name="loading.gif" hash="7e99e1159a3686f6aa4f90043c554483"/><file name="mc.gif" hash="2680e078159e5aedb561c3a705801a44"/><file name="mcsecure.gif" hash="730735c1e2d36d9fa3bd6468fa0b1a7d"/><file name="moca.gif" hash="befd2f10976c0ab40333f01fc6db4743"/><file name="mtro.gif" hash="d5df5f7986a21bf5a78b9c7a3656facd"/><file name="oko.gif" hash="1cde3c12036ebd74a643aee2ffb0513a"/><file name="pbb.gif" hash="fff306c0ea2e7568eef562ec3dc6edd8"/><file name="pbbtest.gif" hash="fff306c0ea2e7568eef562ec3dc6edd8"/><file name="pci.gif" hash="b55a87df550ea6789c17e389604e28e1"/><file name="seb.gif" hash="502b1dbeb81bce51abd1ea149d4dde14"/><file name="shb.gif" hash="0aa7c7fab4133ff4843c0ae73cabe9de"/><file name="solo.gif" hash="17b9be1a06125dcc7d1a6be8fea38dd6"/><file name="val.gif" hash="e62b75eb172934e118a70366baac51ee"/><file name="visa.gif" hash="b61251f8c428aa5dca017c9f374957ef"/><file name="visasecure.gif" hash="517118742fce249485c8eaf6df174764"/></dir></dir></dir></dir></dir></dir><dir name="frontend"><dir name="base"><dir name="default"><dir name="images"><dir name="Dibsfw"><dir name="Dibsfw"><file name="aktia.gif" hash="7afe00b19b4194fa4ffbdf20cdd469c1"/><file name="amex.gif" hash="f35f89ccdcb954e02a07f6c0a29c7b43"/><file name="bax.gif" hash="c315574fd839dae52a1316b6d8b836b6"/><file name="dibs.gif" hash="8b308757472fc5aaaedfefd5c79a2d54"/><file name="din.gif" hash="fabce04659a94993a230285b9a4651e9"/><file name="dk.gif" hash="daa5d5d2c0d541579b0e13aa3cd9d65b"/><file name="dnb.gif" hash="1f616c382b72248334f6aa1ca910003b"/><file name="edk.gif" hash="4485910a0fb40512233c1a59ddd31015"/><file name="elec.gif" hash="e5371ba0da9bb14990d1b8163cedd066"/><file name="elv.gif" hash="3bd20355343bd250a6a704fdbaf9ba62"/><file name="ew.gif" hash="b50385f7d878be6a3834310d1fbc3a1d"/><file name="ffk.gif" hash="d9cd7fa26230a850114b2dc99aea3b22"/><file name="fsb.gif" hash="d6da3e67f8096811c2ad0135b2aad80a"/><file name="git.gif" hash="b70e244f36e7aec94fe3f6373e1ae8d7"/><file name="ing.gif" hash="40f07b266bcd5953bb6c079f7eeaae67"/><file name="jcb.gif" hash="aea8c54e043a75b26887fa1307ad4312"/><file name="jcbsecure.gif" hash="1c687214f79b73d7e99f5011c9c22bce"/><file name="loading.gif" hash="7e99e1159a3686f6aa4f90043c554483"/><file name="mc.gif" hash="2680e078159e5aedb561c3a705801a44"/><file name="mcsecure.gif" hash="730735c1e2d36d9fa3bd6468fa0b1a7d"/><file name="moca.gif" hash="befd2f10976c0ab40333f01fc6db4743"/><file name="mtro.gif" hash="d5df5f7986a21bf5a78b9c7a3656facd"/><file name="oko.gif" hash="1cde3c12036ebd74a643aee2ffb0513a"/><file name="pbb.gif" hash="fff306c0ea2e7568eef562ec3dc6edd8"/><file name="pbbtest.gif" hash="fff306c0ea2e7568eef562ec3dc6edd8"/><file name="pci.gif" hash="b55a87df550ea6789c17e389604e28e1"/><file name="seb.gif" hash="502b1dbeb81bce51abd1ea149d4dde14"/><file name="shb.gif" hash="0aa7c7fab4133ff4843c0ae73cabe9de"/><file name="solo.gif" hash="17b9be1a06125dcc7d1a6be8fea38dd6"/><file name="val.gif" hash="e62b75eb172934e118a70366baac51ee"/><file name="visa.gif" hash="b61251f8c428aa5dca017c9f374957ef"/><file name="visasecure.gif" hash="517118742fce249485c8eaf6df174764"/></dir></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>

@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Dibs A/S
+ * Dibs Payment Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Payments & Gateways Extensions
+ * @package    Dibsfw_DibsfwModule
+ * @author     Dibs A/S
+ * @copyright  Copyright (c) 2010 Dibs A/S. (http://www.dibs.dk/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+$oPaymate = Mage::getModel('dibsfw/Dibsfw');
+$aDibsparmeter = $oPaymate->getCheckoutFormFields();
+
+?>
+<h2><?php echo $this->__('DIBSFW_LABEL_24') ?></h2>
+<form method="post" id="dibsfw-payment" action="<?php echo $oPaymate->dibsflex_api_getFormAction() ?>">
+    <div>
+        <?php foreach($aDibsparmeter as $sField => $sVal) {?> 
+            <input type="hidden" name="<?php echo $sField ?>" value="<?php echo $sVal ?>" /> 
+        <?php } ?>
+    </div>
+</form>
+<?php
+    // Save the order into the dibs_orderdata table
+    $oPaymate->dibsflex_api_processDB($aDibsparmeter['orderid']);
+?>
+	
+<script type="text/javascript">
+    setTimeout("document.getElementById('dibsfw-payment').submit();",1000);
+</script>

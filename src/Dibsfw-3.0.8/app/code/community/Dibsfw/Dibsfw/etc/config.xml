@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Dibs A/S
+ * Dibs Payment Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Payments & Gateways Extensions
+ * @package    Dibsfw_Dibsfw
+ * @author     Dibs A/S
+ * @copyright  Copyright (c) 2010 Dibs A/S. (http://www.dibs.dk/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Dibsfw_Dibsfw>
+            <version>3.0.8</version>
+            <depends>
+                <Mage_Paygate />
+            </depends>
+        </Dibsfw_Dibsfw>
+    </modules>
+    <global>
+    	<blocks>
+            <dibsfw>
+            	<class>Dibsfw_Dibsfw_Block</class>
+            </dibsfw>
+        </blocks>
+    	<models>
+            <dibsfw>
+                <class>Dibsfw_Dibsfw_Model</class>
+                <resourceModel>dibsfw_mysql4</resourceModel>
+            </dibsfw>
+            <dibsfw_mysql4>
+                <class>Dibsfw_Dibsfw_Model_Mysql4</class>
+                <entities>
+                    <api_debug>
+                        <table>dibsfw_api_debug</table>
+                    </api_debug>
+                </entities>
+            </dibsfw_mysql4>
+    	</models>
+    	<helpers>
+            <dibsfw>
+                <class>Dibsfw_Dibsfw_Helper</class>
+            </dibsfw>
+    	</helpers>
+        <resources>
+            <dibsfw_setup>
+                <setup>
+                    <module>Dibsfw_Dibsfw</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </dibsfw_setup>
+            <dibsfw_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </dibsfw_write>
+            <dibsfw_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </dibsfw_read>
+        </resources>
+    </global>
+    <frontend>
+        <routers>
+            <Dibsfw>
+                <use>standard</use>
+                <args>
+                    <module>Dibsfw_Dibsfw</module>
+                    <frontName>Dibsfw</frontName>
+                </args>
+            </Dibsfw>
+        </routers>
+    </frontend>
+    <frontend>
+        <translate>
+            <modules>
+                <Mage_Dibsfw>
+                    <files>
+                        <default>Mage_Dibsfw.csv</default>
+                    </files>
+                </Mage_Dibsfw>
+            </modules>
+        </translate>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Mage_Dibsfw>
+                    <files>
+                        <default>Mage_Dibsfw.csv</default>
+                    </files>
+                </Mage_Dibsfw>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <payment>
+            <Dibsfw>
+                <active>0</active>
+                <url_failure>checkout/cart</url_failure>
+                <url_accept>checkout/success</url_accept>
+                <url_callback>checkout/cart</url_callback>
+                <model>dibsfw/Dibsfw</model>
+                <order_status>pending_payment</order_status>
+                <order_status_after_payment>processing</order_status_after_payment>
+                <DIBSFW_testmode>yes</DIBSFW_testmode>
+                <title>DIBS FlexWin | Secure Payment Services</title>
+		<DIBSFW_capt>no</DIBSFW_capt>
+                <DIBSFW_uniq>no</DIBSFW_uniq>
+                <DIBSFW_voucher>no</DIBSFW_voucher>
+                <DIBSFW_sendcookies>no</DIBSFW_sendcookies>
+                <DIBSFW_fee>no</DIBSFW_fee>
+                <DIBSFW_skiplast>no</DIBSFW_skiplast>
+                <DIBSFW_decor>default</DIBSFW_decor>
+                <DIBSFW_color>blank</DIBSFW_color>
+		<DIBSFW_lang>en</DIBSFW_lang>	
+	  	<sendmailorderconfirmation>1</sendmailorderconfirmation>
+                <dibsfwlogos>DIBS</dibsfwlogos>
+                <handlestock>1</handlestock>
+		<DIBSFW_distr>empty</DIBSFW_distr>
+                <sort_order>0</sort_order>
+                <allowspecific>0</allowspecific>
+            </Dibsfw>
+        </payment>
+    </default>
+</config>

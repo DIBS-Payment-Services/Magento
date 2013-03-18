@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+    <title>#errname_err#</title>
+</head>
+<body>
+    <h3>#errname_err#</h3>
+    <p>
+        #errcode_msg#&nbsp;#errcode#
+        <br />
+        #errmsg_msg#&nbsp;#errmsg_err#
+    </p>
+    <button type="submit" formaction="#link_toshop#">#toshop_msg#</button>
+</body>
+</html>
