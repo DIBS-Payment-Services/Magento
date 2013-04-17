@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Dibs A/S
+ * Dibs Payment Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Payments & Gateways Extensions
+ * @package    Dibspw_Dibspw
+ * @author     Dibs A/S
+ * @copyright  Copyright (c) 2010 Dibs A/S. (http://www.dibs.dk/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Dibspw_Dibspw>
+            <version>4.2.1</version>
+            <depends>
+                <Mage_Paygate />
+            </depends>
+        </Dibspw_Dibspw>
+    </modules>
+    <global>
+       <sales>
+          <order_invoice>
+                <totals>
+                    <dibspw>
+                        <class>dibspw/sales_order_total_invoice_fee</class>
+                        <after>subtotal</after>
+                        <before>tax</before>
+                    </dibspw>
+                </totals>
+              </order_invoice>
+      </sales>
+    	<blocks>
+      <adminhtml>
+                <rewrite>
+                    <sales_order_totals>Dibspw_Dibspw_Block_Adminhtml_Sales_Order_Totals</sales_order_totals>
+                    <sales_order_invoice_totals>Dibspw_Dibspw_Block_Adminhtml_Sales_Order_Invoice_Totals</sales_order_invoice_totals>
+                    <sales_order_creditmemo_totals>Dibspw_Dibspw_Block_Adminhtml_Sales_Order_Creditmemo_Totals</sales_order_creditmemo_totals>
+                </rewrite>
+      </adminhtml>
+
+            <dibspw>
+            	<class>Dibspw_Dibspw_Block</class>
+            </dibspw>
+        </blocks>
+    	<models>
+            <dibspw>
+    		<class>Dibspw_Dibspw_Model</class>
+                <resourceModel>dibspw_mysql4</resourceModel>
+            </dibspw>
+            <dibspw_mysql4>
+                <class>Dibspw_Dibspw_Model_Mysql4</class>
+                <entities>
+                    <api_debug>
+                        <table>dibspw_api_debug</table>
+                    </api_debug>
+                </entities>
+            </dibspw_mysql4>
+    	</models>
+    	<helpers>
+    		<dibspw>
+                    <class>Dibspw_Dibspw_Helper</class>
+    		</dibspw>
+    	</helpers>
+        <resources>
+            <dibspw_setup>
+                <setup>
+                    <module>Dibspw_Dibspw</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </dibspw_setup>
+            <dibspw_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </dibspw_write>
+            <dibspw_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </dibspw_read>
+        </resources>
+    </global>
+    <frontend>
+        <routers>
+            <Dibspw>
+                <use>standard</use>
+                <args>
+                    <module>Dibspw_Dibspw</module>
+                    <frontName>Dibspw</frontName>
+                </args>
+            </Dibspw>
+        </routers>
+        
+       <layout>
+            <updates>
+                <dibspw>
+                    <file>dibspw.xml</file>
+                </dibspw>
+            </updates>
+        </layout>
+        
+        
+        
+    </frontend>
+    <frontend>
+        <translate>
+            <modules>
+                <Mage_Dibspw>
+                    <files>
+                        <default>Mage_Dibspw.csv</default>
+                    </files>
+                </Mage_Dibspw>
+            </modules>
+        </translate>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Mage_Dibspw>
+                    <files>
+                        <default>Mage_Dibspw.csv</default>
+                    </files>
+                </Mage_Dibspw>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <payment>
+            <Dibspw>
+                <active>0</active>
+                <url_failure>checkout/cart</url_failure>
+                <url_accept>checkout/success</url_accept>
+                <url_callback>checkout/cart</url_callback>
+                <model>dibspw/Dibspw</model>
+                <order_status>pending_payment</order_status>
+                <order_status_after_payment>processing</order_status_after_payment>
+                <DIBSPW_testmode>1</DIBSPW_testmode>
+                <title>DIBS Payment Window | Secure Payment Services</title>
+                <DIBSPW_fee>no</DIBSPW_fee>
+		<DIBSPW_paytype>VISA,MC</DIBSPW_paytype>
+		<DIBSPW_lang>en_UK</DIBSPW_lang>	
+	  	<sendmailorderconfirmation>1</sendmailorderconfirmation>
+                <dibspwlogos>DIBS</dibspwlogos>
+                <handlestock>1</handlestock>
+				<DIBSPW_distr>empty</DIBSPW_distr>
+     			<DIBSPW_bundle>1</DIBSPW_bundle>
+	            <sort_order>0</sort_order>
+                <allowspecific>0</allowspecific>
+                <min_order_total>0.01</min_order_total>
+            </Dibspw>
+        </payment>
+    </default>
+</config>

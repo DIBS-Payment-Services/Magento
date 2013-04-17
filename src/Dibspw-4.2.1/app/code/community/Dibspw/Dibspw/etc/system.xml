@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Dibs A/S
+ * Dibs Payment Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Payments & Gateways Extensions
+ * @package    Dibspw_Dibspw
+ * @author     Dibs A/S
+ * @copyright  Copyright (c) 2010 Dibs A/S. (http://www.dibs.dk/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<config>
+    <sections>
+        <payment translate="label" module="payment">
+        	<groups>
+                    <Dibspw translate="label">
+                    <label>DIBS Payment Window Module</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                        <![CDATA[Detailed description of configuration parameters can be found on 
+                            <a href="http://tech.dibs.dk/" target="_blank">
+                            our Tech site</a>.]]>
+                    </comment>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Title (Payment method name displayed for customers. Ex: DibsGW) </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+			<DIBSPW_mid translate="label">
+                            <label>DIBS Merchant ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+			</DIBSPW_mid>
+                        <DIBSPW_HMAC translate="label">
+                            <label>HMAC Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_HMAC>
+			<DIBSPW_testmode translate="label">
+                            <label>Test mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/System_Config_Source_Dibsyesno</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+			</DIBSPW_testmode>
+                        <DIBSPW_fee translate="label">
+                            <label>Add fee</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/System_Config_Source_Dibsyesno</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_fee>
+                        <DIBSPW_capturenow translate="label">
+                            <label>Capture now</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/System_Config_Source_Dibsyesno</source_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_capturenow>
+                        <DIBSPW_paytype translate="label">
+                            <label>Paytype</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_paytype>
+                        <DIBSPW_lang translate="label">
+                            <label>Language Payment Window</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/system_config_source_lang</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_lang>
+                        <DIBSPW_account translate="label">
+                            <label>Account</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_account>
+                        <DIBSPW_distr translate="label">
+                            <label>Distribution method (Only relevant for PayByBill payment type).</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/system_config_source_PBBdistribution</source_model>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </DIBSPW_distr>
+                        <order_status translate="label">
+                            <label>New order status (Before the payment is made)</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/System_Config_Source_Orderstatusbefore</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </order_status>
+                        <order_status_after_payment translate="label">
+                            <label>Paid order status (When the payment is made)</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>dibspw/System_Config_Source_Orderstatusafter</source_model>
+                            <sort_order>16</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </order_status_after_payment>
+                        <allowspecific translate="label">
+                            <label>Payment from Applicable Countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <sort_order>18</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        <min_order_total translate="label">
+                            <label>Min. order total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>19</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Max. order total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_order_total>
+                        <sendmailorderconfirmation translate="label">
+                            <label>Send Email Order Confirmation. Enabling this setting will result in an email confirmation is send to the cardholder as the payment is made.</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sendmailorderconfirmation>
+                        <dibspwlogos translate="label">
+                            <label>Which logos to show</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>dibspw/system_config_source_dibslogos</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </dibspwlogos>
+                        <handlestock translate="label">
+                            <label>Handle stock. The quantity purchased in stock will at first be decremented as the payment is made.</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </handlestock>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                    </fields>
+                </Dibspw>
+            </groups>
+        </payment>
+    </sections>
+</config>
