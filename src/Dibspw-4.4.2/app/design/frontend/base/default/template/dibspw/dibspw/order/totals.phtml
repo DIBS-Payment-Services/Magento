@@ -1,0 +1,43 @@
+<?php 
+   
+  // Add Fee to totals array if our order contains Fee 
+  $feeAmount = $this->getOrder()->getFeeAmount()/100;
+  
+  if($feeAmount) {  
+  $feeItem  =  new Varien_Object(array(
+            'code'      => 'fee',
+            'strong'    => false,
+            'value'     => $feeAmount,
+            'base_value'=> $feeAmount,
+            'label'     => "Fee",
+            'area'      => 'footer'
+        ));
+  $this->addTotalBefore($feeItem, 'shipping');
+  }
+?>
+
+
+<?php foreach ($this->getTotals() as $_code => $_total): ?>
+    <?php if ($_total->getBlockName()): ?>
+        <?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+    <?php else:?>
+    <tr class="<?php echo $_code?>">
+        <td <?php echo $this->getLabelProperties()?>>
+            <?php if ($_total->getStrong()):?>
+            <strong><?php echo $_total->getLabel()?></strong>
+            <?php if( $_total->getCode() == 'grand_total'){$_total->setValue($_total->getValue() + $feeAmount);}?> 
+            <?php else:?>
+            <?php echo $_total->getLabel()?>
+            <?php endif?>
+        </td>
+        <td <?php echo $this->getValueProperties()?>>
+            <?php if ($_total->getStrong()):?>
+            <strong><?php echo $this->formatValue($_total) ?></strong>
+            <?php else:?>
+            <?php echo $this->formatValue($_total) ?>
+            <?php endif?>
+        </td>
+    </tr>
+    <?php endif?>
+    <?php  ?>
+<?php endforeach?>
