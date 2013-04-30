@@ -294,7 +294,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         
         $iAmount = (isset($_POST['voucherAmount']) && $_POST['voucherAmount'] > 0) ? 
                     $_POST['amountOriginal'] : $_POST['amount'];
-        if(abs((int)$iAmount - (int)self::api_dibs_round($mOrderInfo->amount, dibs_pw_api::api_dibs_get_currencyMinValue( $_POST['currency'] ) )) >= 0.01) return 4;
+        if(abs((int)$iAmount - (int)self::api_dibs_round($mOrderInfo->amount, dibs_pw_api::api_dibs_get_currencyMinValue( $_POST['currency'] ) )) > 1) return 4;
  
         if((int)$mOrderInfo->currency != (int)$_POST['currency']) return 6;
           
