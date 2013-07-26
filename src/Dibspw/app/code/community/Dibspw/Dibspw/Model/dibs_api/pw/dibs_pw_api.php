@@ -37,12 +37,10 @@ class dibs_pw_api extends dibs_pw_helpers {
     private static $sFormAction  = 'https://sat1.dibspayment.com/dibspaymentwindow/entrypoint';
     
 	/*
-	 * Dibs Payment Window Api URLS
+	 * Dibs Payment Window Base Api URL
 	 * 
 	 */
-	  const CAPTURE_URL = "https://api.dibspayment.com/merchant/v1/JSON/Transaction/CaptureTransaction";
-	  const REFUND_URL  = "https://api.dibspayment.com/merchant/v1/JSON/Transaction/RefundTransaction";
-      const CANCEL_URL  = "https://api.dibspayment.com/merchant/v1/JSON/Transaction/CancelTransaction";
+      const BASE_TRANSACTION_URL = "https://api.dibspayment.com/merchant/v1/JSON/Transaction";
 	
     /**
      * Dictionary of DIBS response to self::$sDibsTable table fields relations.
@@ -585,66 +583,48 @@ class dibs_pw_api extends dibs_pw_helpers {
     /** DIBS API TOOLS END **/
     
     public function callDibsApi ($payment , $amount, $action) {
-   
-        $url = ''; 
-        $status = '';   
-        $message = '';
-        
-        
-        $order = $payment->getOrder();
-        $transaction = self::getTransactionId($order->getRealOrderId()); 
-        $data = array('merchantId' => $this->helper_dibs_tools_conf('mid'), 
-                      'amount'     => self::api_dibs_round($amount),
-                      'transactionId' => $transaction, 
-                      );
-        
-        switch ($action) {
-            case 'capture':
-                $url = self::CAPTURE_URL;
-                break;
-            case 'refund':
-                $url = self::REFUND_URL;
-                break;
-            
-            case 'cancel':
-                $url = self::CANCEL_URL;
-                unset($data['amount']);
-                break;
+  
+        // We must have HMAC code for every transaction
+        if(!$hmacCode = $this->helper_dibs_tools_conf('HMAC')) {
+            Mage::throwException('Error with HMAC code, please check HMAC code in module config');
         }
-            
-     
-        $fee = self::getFee($order->getRealOrderId());
         
-        $hmacCode = $this->helper_dibs_tools_conf('HMAC');
-        
-        if(!$hmacCode) {
-            $message = 'Erros with HMAC code, please check HMAC code in module config';
-        }
-        $data['MAC'] = $this->api_dibs_calcMAC($data, $hmacCode);
-        
+        // Create and set params for Http curl client
         $httpClient = new Zend_Http_Client();
-        $adapter = new Zend_Http_Client_Adapter_Curl();
+        $adapter    = new Zend_Http_Client_Adapter_Curl();
         $adapter->setCurlOption(CURLOPT_SSLVERSION, 3);
+        $adapter->setCurlOption(CURLOPT_SSL_VERIFYPEER, false);
         $httpClient->setHeaders(array('Content-Type: text/json'));
-        $httpClient->setUri($url);
+        $httpClient->setUri(self::BASE_TRANSACTION_URL."/{$action}");
         $httpClient->setMethod(Zend_Http_Client::POST);
         $httpClient->setAdapter($adapter);
+     
+        // prepare data for request
+        $data = array('merchantId'    => $this->helper_dibs_tools_conf('mid'), 
+                      'amount'        => self::api_dibs_round($amount),
+                      'transactionId' => self::getTransactionId($payment->
+                                               getOrder()->getRealOrderId()));
+                      
+        // We don't need to include amount in a MAC 
+        // calculation in a case of Cancel transaction    
+        if( $action == 'CancelTransaction') {
+            unset($data['amount']);
+        }
+        $data['MAC'] = $this->api_dibs_calcMAC($data, $hmacCode);
         $httpClient->setParameterPost('json', Zend_Json::encode($data));
        
+        // Do request and handle results
         try { 
-            $response = $httpClient->request();
-            
+            $response  = $httpClient->request();
+            $phpNative = Zend_Json::decode($response->getBody());
+            $status    = $phpNative['status'];
+            $message   = $phpNative['declineReason'];
         } catch(Exception $e) {
             $message = ":  ".$e->getMessage(); 
         }
-        
-        if( $response) {
-            $phpNative = Zend_Json::decode($response->getBody());
-            Mage::log($phpNative, true, "oline.interaction.log");
-            $status = $phpNative['status'];
-            $message = $phpNative['declineReason'];
-        }
-        return array('status' => $status,'transaction_id' => $transaction ,'message' => $message);
+        return array('status'         => $status,
+                     'transaction_id' => $data['transactionId'],
+                     'message'        => $message);
  	}
    
    

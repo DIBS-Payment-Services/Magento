@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Dibspw_Dibspw>
-            <version>4.2.3</version>
+            <version>4.2.4</version>
             <depends>
                 <Mage_Paygate />
             </depends>
@@ -81,12 +81,6 @@
                     <service_quote>Dibspw_Dibspw_Model_Service_Quote</service_quote>
                  </rewrite>  
              </sales>
-             
-             <checkout>
-                <rewrite> 
-                        <type_onepage>First_Module_Model_Checkout_Type_Onepage</type_onepage>
-                </rewrite>
-             </checkout>
       </models>
     	<helpers>
     		<dibspw>

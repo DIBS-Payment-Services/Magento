@@ -67,7 +67,8 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
 	/** For capture **/
     public function capture(Varien_Object $payment, $amount)
     {
-        $result = $this->callDibsApi($payment, $amount, 'capture');
+        $result = $this->callDibsApi($payment, $amount, 'CaptureTransaction');
+        
         switch ($result['status']) {
             case 'ACCEPT':
                     $payment->setTransactionId($result['transaction_id']);
@@ -75,11 +76,11 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
                     $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
                 break;
             case 'DECLINE':
-                    $errorMsg = $this->_getHelper()->__("DEBS returned DECLINE check your payment in DIBS admin");
+                    $errorMsg = $this->_getHelper()->__("DEBS returned DECLINE check your payment in DIBS admin. Error msg: ".$result['message']);
                     $this->log("Capture DECLINE. Error message:".$result['message']); 
                 break;
             case 'ERROR':
-                     $errorMsg = $this->_getHelper()->__("DIBS returned ERROR check your payment in DIBS admin");
+                     $errorMsg = $this->_getHelper()->__("DIBS returned ERROR check your payment in DIBS admin. Error msg: ".$result['message']);
                      $this->log("Capture ERROR. Error message:".$result['message'], $result['transaction_id']);   
                 break;
             case 'PENDING':
@@ -100,7 +101,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
 
     public function refund(Varien_Object $payment, $amount)
     {
-       $result = $this->callDibsApi($payment,$amount,'refund');
+       $result = $this->callDibsApi($payment,$amount,'RefundTransaction');
          switch ($result['status']) {
             case 'ACCEPT':
                 $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
@@ -124,7 +125,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     
     
     public function cancel(Varien_Object $payment) {
-       $result = $this->callDibsApi($payment,$amount,'cancel');
+       $result = $this->callDibsApi($payment,$amount,'CancelTransaction');
        switch ($result['status']) {
            case 'ACCEPT':
                 $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);
