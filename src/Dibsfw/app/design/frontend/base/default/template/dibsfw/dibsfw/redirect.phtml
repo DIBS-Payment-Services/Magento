@@ -26,7 +26,7 @@ $aDibsparmeter = $oPaymate->getCheckoutFormFields();
 
 ?>
 <h2><?php echo $this->__('DIBSFW_LABEL_24') ?></h2>
-<form method="post" id="dibsfw-payment" action="<?php echo $oPaymate->dibsflex_api_getFormAction() ?>">
+<form method="post" id="dibsfw-payment" action="<?php echo $oPaymate->dibsflex_api_getFormAction() ?>" accept-charset="UTF-8">
     <div>
         <?php foreach($aDibsparmeter as $sField => $sVal) {?> 
             <input type="hidden" name="<?php echo $sField ?>" value="<?php echo $sVal ?>" /> 
