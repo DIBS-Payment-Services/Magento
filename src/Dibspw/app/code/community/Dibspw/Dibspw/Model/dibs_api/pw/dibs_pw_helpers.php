@@ -216,7 +216,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
         return (object)array(
                     'acceptreturnurl' => "Dibspw/Dibspw/success",
                     'callbackurl'     => "Dibspw/Dibspw/callback",
-                    'cancelreturnurl' => "checkout/cart",
+                    'cancelreturnurl' => "Dibspw/Dibspw/cancel", //"checkout/cart",
                     'carturl'         => "customer/account/index"
                 );
     }
@@ -229,7 +229,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      */
     function helper_dibs_obj_etc($mOrderInfo) {
         return (object)array(
-                    'sysmod'      => 'mgn1_4_2_4',
+                    'sysmod'      => 'mgn1_4_2_6',
                     'callbackfix' => $this->helper_dibs_tools_url("Dibspw/Dibspw/callback")
                 );
     }

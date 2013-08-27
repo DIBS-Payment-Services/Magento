@@ -142,15 +142,17 @@ class Dibspw_Dibspw_DibspwController extends Mage_Core_Controller_Front_Action {
       	$oOrder = Mage::getModel('sales/order');
         $oOrder->loadByIncrementId($iOrderId);
         
+        
+        
+        
 	if(!is_null($oOrder)) {
             $oOrder->registerCancellation($this->__('DIBSPW_LABEL_20'));
             $oOrder->save();
             $this->oDibsModel->removeFromStock($iOrderId);
             $this->oDibsModel->api_dibs_action_cancel();
         }
-        
         Mage::app()->getFrontController()->getResponse()->setRedirect(
-                $this->oDibsModel->helper_dibs_tools_url('sales/order/history')
+                $this->oDibsModel->helper_dibs_tools_url('checkout/cart')
         );
     }
     

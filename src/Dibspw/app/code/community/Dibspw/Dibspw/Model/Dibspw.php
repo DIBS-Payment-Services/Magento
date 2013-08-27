@@ -38,6 +38,19 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     protected $_canSaveCc = false;
     protected $_isInitializeNeeded = true;
 
+    /**
+     * Payment method code
+     *
+     * @var string
+     */
+ 
+    
+      public function authorize(Varien_Object $payment, $amount) {
+        return $this;
+    }
+  
+
+
      
     /* 
      * Validate the currency code is avaialable to use for dibs or not
@@ -125,6 +138,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     
     
     public function cancel(Varien_Object $payment) {
+    
        $result = $this->callDibsApi($payment,$amount,'CancelTransaction');
        switch ($result['status']) {
            case 'ACCEPT':
@@ -132,7 +146,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
            break;
      
            case 'ERROR' :
-               $errorMsg = $this->_getHelper()->__("Error due online refund. Use DIBS Admin panel to manually cancel this transaction" . $result['message']);
+               $errorMsg = $this->_getHelper()->__("Error due online cancel. Use DIBS Admin panel to manually cancel this transaction" . $result['message']);
                $this->log("Cancel ERROR. Error message:".$result['message'], $result['transaction_id']);   
            break;      
            

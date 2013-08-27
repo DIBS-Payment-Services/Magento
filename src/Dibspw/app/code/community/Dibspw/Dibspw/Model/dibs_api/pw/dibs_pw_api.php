@@ -6,7 +6,7 @@ require_once str_replace('\\', '/', dirname(__FILE__)) . '/dibs_pw_helpers.php';
 class dibs_pw_api extends dibs_pw_helpers {
 
     /**
-     * DIBS responses log table.
+     *  DIBS responses log table.
      * 
      * @var string
      */
@@ -34,7 +34,7 @@ class dibs_pw_api extends dibs_pw_helpers {
      * 
      * @var string 
      */
-    private static $sFormAction  = 'https://sat1.dibspayment.com/dibspaymentwindow/entrypoint';
+    private static $sFormAction = 'https://sat1.dibspayment.com/dibspaymentwindow/entrypoint';
     
 	/*
 	 * Dibs Payment Window Base Api URL
@@ -179,7 +179,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         if(strpos($aData['callbackurl'], '/5c65f1600b8_dcbf.php') === FALSE) {
             $aData['callbackurl'] = $this->helper_dibs_tools_url($aData['callbackurl']);
         }
-    }
+     }
     
     /**
      * Adds Invoice API parameters specific for SAT PW.

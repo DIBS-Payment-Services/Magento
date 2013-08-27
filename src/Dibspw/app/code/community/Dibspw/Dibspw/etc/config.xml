@@ -24,13 +24,26 @@
 <config>
     <modules>
         <Dibspw_Dibspw>
-            <version>4.2.4</version>
+            <version>4.2.6</version>
             <depends>
                 <Mage_Paygate />
             </depends>
         </Dibspw_Dibspw>
     </modules>
     <global>
+   
+     <events> 
+        <order_cancel_after>
+            <observers>
+                <dibspw>
+                   <type>singleton</type>
+                   <class>dibspw/observer</class>
+                   <method>order_cancel_after</method>
+                 </dibspw>
+               </observers>
+         </order_cancel_after>
+      </events>
+   
        <sales>
           <order_invoice>
                 <totals>
@@ -54,13 +67,6 @@
             <dibspw>
             	<class>Dibspw_Dibspw_Block</class>
             </dibspw>
-            
-            <payment> 
-               <rewrite>  
-            		<info>Dibspw_Dibspw_Block_Info</info>
-            	</rewrite>	
-            </payment>
-            
         </blocks>
     	<models>
             <dibspw>
