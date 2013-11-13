@@ -32,7 +32,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     protected $_canRefund = true;
     protected $_canRefundInvoicePartial = true;
     protected $_canVoid = true;
-    protected $_canUseInternal = false;
+    protected $_canUseInternal = true;
     protected $_canUseCheckout = true;
     protected $_canUseForMultishipping = false;
     protected $_canSaveCc = false;
@@ -57,11 +57,6 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
      */
     public function validate() {
         parent::validate();
-        $sCurrencyCode = Mage::getSingleton('checkout/session')->getQuote()->getBaseCurrencyCode();
-        if (!array_key_exists($sCurrencyCode, dibs_pw_api::api_dibs_get_currencyArray())) {
-            Mage::throwException(Mage::helper('Dibspw')->__('Selected currency code (' . 
-                                                $sCurrencyCode . ') is not compatabile with Dibs'));
-        }
         return $this;
     }
     
@@ -97,9 +92,11 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
                      $this->log("Capture ERROR. Error message:".$result['message'], $result['transaction_id']);   
                 break;
             case 'PENDING':
-                     $errorMsg = $this->_getHelper()->__("DIBS returned PENDING check your payment in DIBS admin later");
+                      $noticeMsg = "Transaction has been successfully added for a batch capture. 
+                                    The result of the capture can be found in the administration.";
                      $this->log("Capture PENDING. Error message:".$result['message'], $result['transaction_id']); 
-                break;
+                     Mage::getSingleton('core/session')->addNotice($noticeMsg);
+                 break;
                 default:
                     $errorMsg = $this->_getHelper()->__("Error due online capture" . $result['message']);
                     $this->log("Capture uncnown error. Error message:".$result['message'], $result['transaction_id']); 
