@@ -100,39 +100,20 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      * @param mixed $mOrderInfo All order information, needed for DIBS (in shop format).
      * @return object 
      */
-    function helper_dibs_obj_items($mOrderInfo) {
+  function helper_dibs_obj_items($mOrderInfo) {
+    
         $aItems = array();
         $spitBundle = false;
+        $taxesAndShippingPrice = 0;
+        $isAmountFixed = false;
         if($this->helper_dibs_tools_conf('bundle') == 'yes') {
            $spitBundle = true;
         }
         
-        foreach($mOrderInfo->getAllItems() as $oItem) {
-          
-            // Just exclude chilren from bundle products
-            if($oItem->getParentItem()) continue;
-           
-            $aItems[] = (object)array(
-                'id'    => $oItem->getProductId(),
-                'name'  => $oItem->getName(),
-                'sku'   => $oItem->getSku(),
-                'price' => $oItem->getPrice(),
-                'qty'   => $oItem->getQtyOrdered(),
-                'tax'   => 0
-            );
-          
-        }
-        
         $fDiscount = $mOrderInfo->getDiscountAmount();
+       
         if(!empty($fDiscount)) {
-            $aItems[] = (object)array(
-                'id'    => 'discount0',
-                'name'  => $this->helper_dibs_tools_lang('discount_total'),
-                'sku'   => '',
-                'price' => $fDiscount,
-                'qty'   => 1,
-                'tax'   => 0
-            );
+           $taxesAndShippingPrice += $fDiscount; 
         }
         
         $fTaxTotal = 0;
@@ -143,17 +124,98 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
         if( (bool)Mage::getStoreConfig('tax/calculation/apply_after_discount', null) ) {
             $fTaxTotal +=  $mOrderInfo->getHiddenTaxAmount();
         }
-        $aItems[] = (object)array(
-            'id'    => 'tax0',
-            'name'  => $this->helper_dibs_tools_lang('tax_total'),
-            'sku'   => '',
-            'price' => $fTaxTotal,
-            'qty'   => 1,
-            'tax'   => 0
-        );
         
-        return $aItems;
+        $taxesAndShippingPrice += $fTaxTotal;
         
+        if(isset($mOrderInfo['shipping_amount'])) {
+             $taxesAndShippingPrice += $mOrderInfo['shipping_amount'];
+        }
+        
+        $TotalItemPrice = 0;
+        $qtyItems = 0;
+        
+        foreach($mOrderInfo->getAllItems() as $oItem) {
+             // Just exclude chilren from bundle products
+            if($oItem->getParentItem()) continue;
+            $TotalItemPrice += $oItem->getPrice() * $oItem->getQtyOrdered(); 
+        }
+        
+        if(abs(($TotalItemPrice+$taxesAndShippingPrice)-$mOrderInfo->getGrandTotal())>0) {
+          $rounding = $mOrderInfo->getGrandTotal() - ($TotalItemPrice+$taxesAndShippingPrice);
+         } 
+        
+         foreach($mOrderInfo->getAllItems() as $oItem) {
+            // Just exclude chilren from bundle products
+            if($oItem->getParentItem()) continue;
+            $price = $oItem->getPrice();
+            if(!$isAmountFixed && abs($rounding) > 0) {
+                
+            if($oItem->getQtyOrdered() > 1){
+              $aItems[] = (object)array(
+                 'id'    => $oItem->getProductId(),
+                 'name'  => $oItem->getName(),
+                 'sku'   => $oItem->getSku(),
+                 'price' => $price,
+                 'qty'   => $oItem->getQtyOrdered()-1,
+                 'tax'   => 0
+              ); 
+              $price =  $price + $rounding;
+              $aItems[] = (object)array(
+                 'id'    => $oItem->getProductId(),
+                 'name'  => $oItem->getName(),
+                 'sku'   => $oItem->getSku(),
+                 'price' => $price,
+                 'qty'   => 1,
+                 'tax'   => 0
+               );  
+               } else {
+                     
+                 $price += $rounding;
+                 $aItems[] = (object)array(
+                    'id'    => $oItem->getProductId(),
+                    'name'  => $oItem->getName(),
+                    'sku'   => $oItem->getSku(),
+                    'price' => $price,
+                    'qty'   => 1,
+                    'tax'   => 0
+                 );
+                
+               }
+                $isAmountFixed = true;
+            } else {
+              $aItems[] = (object)array(
+                'id'    => $oItem->getProductId(),
+                'name'  => $oItem->getName(),
+                'sku'   => $oItem->getSku(),
+                'price' => $price,
+                'qty'   => $oItem->getQtyOrdered(),
+                'tax'   => 0
+                ); 
+            }
+        }
+ 
+        if(!empty($fTaxTotal)) {  
+           $aItems[] = (object)array(
+                'id'    => 'tax0',
+                'name'  => $this->helper_dibs_tools_lang('tax_total'),
+                'sku'   => '',
+                'price' => $fTaxTotal,
+                'qty'   => 1,
+                'tax'   => 0
+            );
+           }
+ 
+           if(!empty($fDiscount)) { 
+                $aItems[] = (object)array(
+                   'id'    => 'discount0',
+                   'name'  => $this->helper_dibs_tools_lang('discount_total'),
+                   'sku'   => '',
+                   'price' => $fDiscount,
+                   'qty'   => 1,
+                   'tax'   => 0
+                ); 
+             }
+      return $aItems;
     }
     
     /**
