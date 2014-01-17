@@ -117,20 +117,38 @@ class dibs_pw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
     }
 
     public function setOrderStatusAfterPayment(){
-	$order = Mage::getModel('sales/order');
-	$order->loadByIncrementId($_POST['orderid']);
-	$order->setState($this->getConfigData('order_status_after_payment'),
-                         true,
-                         Mage::helper('dibspw')->__('DIBSPW_LABEL_22'));
-    
-    // Add fee to sales_order_table, if order has fee
-    if( $_POST['fee'] ) {
-        $order->setData('fee_amount', $_POST['fee']);
-    }
+	   $status = $_POST['status'];
+       $infoMessage = "";
+       switch($status) {
+        case "ACCEPTED":
+           $infoMessage = 'DIBSPW_LABEL_28';
+         break;
+        case "PENDING":
+           $infoMessage = 'DIBSPW_LABEL_27';
+         break;
+        case "DECLINED":
+           $infoMessage = 'DIBSPW_LABEL_29';
+         break;
+       }
 
-	$order->save();
+       $infoMessage = Mage::helper('dibspw')->__($infoMessage); 
+       $order = Mage::getModel('sales/order');
+	   $order->loadByIncrementId($_POST['orderid']);
+        
+        if($status == "ACCEPTED") {
+       $order->setState($this->getConfigData('order_status_after_payment'),
+                         true,
+                         $infoMessage);
+        // Add fee to sales_order_table, if order has fee
+         if( $_POST['fee'] ) {
+             $order->setData('fee_amount', $_POST['fee']);
+         }
+        } else {
+          $order->addStatusHistoryComment($infoMessage);  
+        }  
+	    $order->save();
+        
     }
-    
     
    /**
     * Removes items from stock, depends on 'handlestock' module configuration option

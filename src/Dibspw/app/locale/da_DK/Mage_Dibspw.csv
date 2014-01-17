@@ -24,6 +24,10 @@
 "DIBSPW_LABEL_24","You will be redirected to DIBS in a few seconds..."
 "DIBSPW_LABEL_25","Notice"
 "DIBSPW_LABEL_26","Manage transaction"
+"DIBSPW_LABEL_27","'Callback' received from DIBS Payment Services with status 'PENDING'"
+"DIBSPW_LABEL_28","'Callback' received from DIBS Payment Services with status 'ACCEPTED'"
+"DIBSPW_LABEL_29","'Callback' received from DIBS Payment Services with status 'DECLINED'"
+
 "dibspw_txt_err_0",      "Error has occurred during payment verification"
 "dibspw_txt_err_1",      "No orderid was returned from DIBS payment gateway."
 "dibspw_txt_err_2",      "Unknown orderid was returned from DIBS payment gateway."
