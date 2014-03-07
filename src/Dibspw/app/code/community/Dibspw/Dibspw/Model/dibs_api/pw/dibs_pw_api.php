@@ -54,7 +54,13 @@ class dibs_pw_api extends dibs_pw_helpers {
                                          'paytype' => 'cardTypeName', 'actioncode' => 'actionCode',
                                          'amountoriginal'=>'amountOriginal', 'sysmod' => 's_sysmod',
                                          'validationerrors'=>'validationErrors',
-                                         'capturestatus' => 'captureStatus');
+                                         'capturestatus' => 'captureStatus', 
+                                         'acquirerDeliveryAddress' => 'acquirerDeliveryAddress',
+                                         'acquirerDeliveryCountryCode' => 'acquirerDeliveryCountryCode',
+                                         'acquirerDeliveryPostalCode' => 'acquirerDeliveryPostalCode',
+                                         'acquirerDeliveryPostalPlace' => 'acquirerDeliveryPostalPlace',
+                                         'acquirerFirstName' => 'acquirerFirstName',
+                                         'acquirerLastName' => 'acquirerLastName');
     
     /**
      * Array of currency's two ISO formats relations.
@@ -179,7 +185,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         if(strpos($aData['callbackurl'], '/5c65f1600b8_dcbf.php') === FALSE) {
             $aData['callbackurl'] = $this->helper_dibs_tools_url($aData['callbackurl']);
         }
-     }
+    }
     
     /**
      * Adds Invoice API parameters specific for SAT PW.
@@ -300,7 +306,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         $iAmount = (isset($_POST['voucherAmount']) && $_POST['voucherAmount'] > 0) ? 
                     $_POST['amountOriginal'] : $_POST['amount'];
         if(abs((int)$iAmount - (int)self::api_dibs_round($mOrderInfo->amount)) >= 0.01) return 4;
- 
+        
         if((int)$mOrderInfo->currency != (int)$_POST['currency']) return 6;
           
         $sHMAC = $this->helper_dibs_tools_conf('hmac');
@@ -412,6 +418,7 @@ class dibs_pw_api extends dibs_pw_helpers {
                  WHERE `orderid` = '" . self::api_dibs_sqlEncode($_POST['orderid']) . "' 
                  LIMIT 1;"
             );
+            
         }
     }
     
