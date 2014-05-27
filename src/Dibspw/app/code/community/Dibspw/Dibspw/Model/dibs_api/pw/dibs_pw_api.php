@@ -258,32 +258,35 @@ class dibs_pw_api extends dibs_pw_helpers {
         $this->helper_dibs_db_write(
             "CREATE TABLE IF NOT EXISTS `" . $this->helper_dibs_tools_prefix() . 
                 self::api_dibs_get_tableName() . "` (
-                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                `orderid` varchar(100) NOT NULL DEFAULT '',
-                `status` varchar(10) NOT NULL DEFAULT '',
-                `testmode` tinyint(1) unsigned NOT NULL DEFAULT '0',
-                `transaction` varchar(100) NOT NULL DEFAULT '',
-                `amount` int(10) unsigned NOT NULL DEFAULT '0',
-                `currency` varchar(3) NOT NULL DEFAULT '',
-                `fee` int(10) unsigned NOT NULL DEFAULT '0',
-                `paytype` varchar(32) NOT NULL DEFAULT '',
-                `voucheramount` int(10) unsigned NOT NULL DEFAULT '0',
-                `amountoriginal` int(10) unsigned NOT NULL DEFAULT '0',
-                `ext_info` text,
-                `validationerrors` text,
-                `capturestatus` varchar(10) NOT NULL DEFAULT '0',
-                `actioncode` varchar(20) NOT NULL DEFAULT '',
-                `success_action` tinyint(1) unsigned NOT NULL DEFAULT '0' 
-                    COMMENT '0 = NotPerformed, 1 = Performed',
-                `cancel_action` tinyint(1) unsigned NOT NULL DEFAULT '0' 
-                    COMMENT '0 = NotPerformed, 1 = Performed',
-                `callback_action` tinyint(1) unsigned NOT NULL DEFAULT '0' 
-                    COMMENT '0 = NotPerformed, 1 = Performed',
-                `success_error` varchar(100) NOT NULL DEFAULT '',
-                `callback_error` varchar(100) NOT NULL DEFAULT '',
-                `sysmod` varchar(10) NOT NULL DEFAULT '',
-                PRIMARY KEY (`id`),
-                KEY `orderid` (`orderid`)
+		   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `orderid` varchar(100) NOT NULL DEFAULT '',
+    `status` varchar(10) NOT NULL DEFAULT '',
+    `testmode` tinyint(1) unsigned NOT NULL DEFAULT '0',
+    `transaction` varchar(100) NOT NULL DEFAULT '',
+    `amount` int(10) unsigned NOT NULL DEFAULT '0',
+    `currency` varchar(3) NOT NULL DEFAULT '',
+    `fee` int(10) unsigned NOT NULL DEFAULT '0',
+    `paytype` varchar(32) NOT NULL DEFAULT '',
+ `voucheramount` int(10) unsigned NOT NULL DEFAULT '0',
+ `amountoriginal` int(10) unsigned NOT NULL DEFAULT '0',
+ `ext_info` text,
+ `validationerrors` text,
+ `capturestatus` varchar(10) NOT NULL DEFAULT '0',
+ `actioncode` varchar(20) NOT NULL DEFAULT '',
+ `success_action` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = NotPerformed, 1 = Performed',
+ `cancel_action` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = NotPerformed, 1 = Performed',
+ `callback_action` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 = NotPerformed, 1 = Performed',
+ `success_error` varchar(100) NOT NULL DEFAULT '',
+ `callback_error` varchar(100) NOT NULL DEFAULT '',
+ `sysmod` varchar(10) NOT NULL DEFAULT '',
+ `acquirerDeliveryAddress` varchar(250) NOT NULL,
+ `acquirerDeliveryCountryCode` varchar(50) NOT NULL,
+ `acquirerDeliveryPostalCode` varchar(50) NOT NULL,
+ `acquirerDeliveryPostalPlace` varchar(50) NOT NULL,
+ `acquirerFirstName` varchar(50) NOT NULL,
+ `acquirerLastName` varchar(50) NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `orderid` (`orderid`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
         );
     }
