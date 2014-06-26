@@ -173,7 +173,7 @@ class dibs_pw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
                          true,
                          $infoMessage);
         // Add fee to sales_order_table, if order has fee
-         if( $_POST['fee'] ) {
+         if( isset($_POST['fee']) && $_POST['fee']) {
              $order->setData('fee_amount', $_POST['fee']);
          }
         } else {

@@ -247,7 +247,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
             $oSession->setQuoteId($oSession->getDibspwStandardQuoteId(true));            
             if (((int)$this->helper_dibs_tools_conf('sendmailorderconfirmation', '')) == 1) {
             // Save fee to Order object if current order has fee
-            if( $_POST['fee'] ) {
+            if( isset($_POST['fee']) && $_POST['fee']) {
                 $oOrder->setFeeAmount($_POST['fee']);
                 $oOrder->setData('fee_amount', $_POST['fee']);
                 $oOrder->save();
