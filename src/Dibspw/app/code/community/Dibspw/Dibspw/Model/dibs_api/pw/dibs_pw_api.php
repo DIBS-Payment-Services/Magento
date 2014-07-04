@@ -312,7 +312,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         
         if((int)$mOrderInfo->currency != (int)$_POST['currency']) return 6;
           
-        $sHMAC = $this->helper_dibs_tools_conf('hmac');
+        $sHMAC = $this->helper_dibs_tools_conf('HMAC');
         if(!empty($sHMAC) && self::api_dibs_checkMAC($sHMAC, $bUrlDecode) !== TRUE) return 7;
         
         return 0;
