@@ -12,8 +12,10 @@ class dibs_pw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
         $this->api_dibs_checkTable();
         $oOrder = Mage::registry('current_order');
         if($oOrder === NULL) {
+            if(isset($_POST['orderid'])) {
             $oOrder = Mage::getModel('sales/order')->loadByIncrementId($_POST['orderid']);
             $bMailing = true;
+	    }			
         } 
         if($oOrder !== NULL &&  is_callable(array($oOrder, 'getIncrementId'))) {
             $iOid = $oOrder->getIncrementId();
@@ -94,7 +96,7 @@ class dibs_pw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
                             $res[Mage::helper('dibspw')->__('DIBSPW_LABEL_16')] = $row['ext']['acquirer'];
                         }
 
-                        if($row['ext']['enrolled'] != '0') {
+                        if( isset($row['ext']['enrolled']) && $row['ext']['enrolled'] != '0') {
                             $res[Mage::helper('dibspw')->__('DIBSPW_LABEL_17')] = $row['ext']['enrolled'];
                         }
 

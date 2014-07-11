@@ -75,8 +75,8 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
 	/** For capture **/
     public function capture(Varien_Object $payment, $amount)
     {
-        $result = $this->callDibsApi($payment, $amount, 'CaptureTransaction');
-        
+        $result   = $this->callDibsApi($payment, $amount, 'CaptureTransaction');
+        $errorMsg = '';
         switch ($result['status']) {
             case 'ACCEPT':
                     $payment->setTransactionId($result['transaction_id']);
