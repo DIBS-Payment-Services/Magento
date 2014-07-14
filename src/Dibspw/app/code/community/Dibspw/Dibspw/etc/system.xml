@@ -65,7 +65,7 @@
 		              </DIBSPW_partnerid>
 		
 			<DIBSPW_mid translate="label">
-                            <label>DIBS Merchant ID</label>
+                            <label>DIBS Integration ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
