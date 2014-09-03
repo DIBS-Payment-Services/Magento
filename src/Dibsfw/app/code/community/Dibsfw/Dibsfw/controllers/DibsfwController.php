@@ -42,10 +42,10 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
         $this->loadLayout();
         if($oOrder->getPayment() !== FALSE) {
             // Create the POST to DIBS (Inside Magento Checkout)
-            //$this->getLayout()->getBlock('content')->append($this->getLayout()->createBlock('dibsfw/redirect/__?=SID'));
+            $this->getLayout()->getBlock('content')->append($this->getLayout()->createBlock('dibsfw/redirect/__?=SID'));
                 
             // Create the POST to DIBS (In Separate "Blank" Window)
-             $this->getResponse()->setBody($this->getLayout()->createBlock('dibsfw/redirect')->toHtml());
+            //$this->getResponse()->setBody($this->getLayout()->createBlock('dibsfw/redirect')->toHtml());
       
             // Save order comment
             foreach($oOrder->getAllStatusHistory() as $oOrderStatusItem) {

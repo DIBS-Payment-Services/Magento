@@ -21,7 +21,7 @@
 "DIBSFW_LABEL_21","'Callback' mottatt fra DIBS Payment Services (www.dibs.no)"
 "DIBSFW_LABEL_22","Kunden har returnert vellykket tilbake til butikk fra DIBS Payment Services (www.dibs.no)"
 "DIBSFW_LABEL_23","Empty or expired order data. Please try to checkout again."
-"DIBSFW_LABEL_24","You will be redirected to DIBS in a few seconds..."
+"DIBSFW_LABEL_24","Du vil bli viderekoplet til DIBS om et øyeblikk"
 "DIBSFW_LABEL_25","Notice"
 "DIBSFW_LABEL_26","Manage transaction"
 "dibsfw_txt_err_fatal",  "A fatal error has occured."

@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Dibsfw_Dibsfw>
-            <version>3.0.8</version>
+            <version>3.1.1</version>
             <depends>
                 <Mage_Paygate />
             </depends>
@@ -140,4 +140,16 @@
             </Dibsfw>
         </payment>
     </default>
+    <crontab>
+        <jobs>
+            <dibsfw_timeout>
+                <schedule>
+                    <cron_expr>*/1 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>dibsfw/dibsfw::cancelOrdersAfterTimeout</model>
+                </run> 
+            </dibsfw_timeout>
+        </jobs>
+    </crontab>
 </config>

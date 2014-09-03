@@ -31,7 +31,7 @@ $aDibsparmeter = $oPaymate->getCheckoutFormFields();
         <?php foreach($aDibsparmeter as $sField => $sVal) {?> 
             <input type="hidden" name="<?php echo $sField ?>" value="<?php echo $sVal ?>" /> 
         <?php } ?>
-    </div>
+    </div>    
 </form>
 <?php
     // Save the order into the dibs_orderdata table

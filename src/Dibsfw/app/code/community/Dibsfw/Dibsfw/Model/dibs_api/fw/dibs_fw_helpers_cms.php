@@ -12,8 +12,10 @@ class dibs_fw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
         $this->dibsflex_api_checkTable();
         $oOrder = Mage::registry('current_order');
         if($oOrder === NULL) {
+             if(isset($_POST['orderid'])) {
             $oOrder = Mage::getModel('sales/order')->loadByIncrementId($_POST['orderid']);
             $bMailing = true;
+             }
         } 
         if($oOrder !== NULL &&  is_callable(array($oOrder, 'getIncrementId'))) {
             $iOid = $oOrder->getIncrementId();

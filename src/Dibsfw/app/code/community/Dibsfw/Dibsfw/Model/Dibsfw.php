@@ -49,4 +49,26 @@ class Dibsfw_Dibsfw_Model_Dibsfw extends dibs_fw_api {
     public function getOrderPlaceRedirectUrl() {
         return Mage::getUrl('Dibsfw/Dibsfw/redirect', array('_secure' => true));
     }
+    
+    
+    public function cancelOrdersAfterTimeout() {
+        $definedTimeout = $this->dibsflex_helper_getconfig('timeout');
+        if ($definedTimeout < 0) {
+            return $this;
+        }
+        
+        $timeout = date('Y-m-d H:i:s', time()-($definedTimeout*60));
+     
+        $orders = Mage::getModel('sales/order')->getCollection()->
+            join(array('op' => 'sales/order_payment'), 'op.entity_id = main_table.entity_id', 'method')->
+            addAttributeToFilter('method', array('eq' => 'Dibsfw'))
+            ->addFieldToFilter('updated_at', array('lt' => $timeout))
+            ->addFieldToFilter('status', array('eq' => Mage_Sales_Model_Order::STATE_PENDING_PAYMENT))
+            ->setPageSize(25);
+        
+        foreach ($orders as $order) {
+            $order->cancel()->save();
+        }
+        return $this;
+    }
 }
