@@ -25,7 +25,7 @@ $oPaymate = Mage::getModel('dibspw/Dibspw');
 $aDibsparmeter = $oPaymate->getCheckoutFormFields();
 ?>
 <h2><?php echo $this->__('DIBSPW_LABEL_24') ?></h2>
-<form method="post" id="dibspw-payment" action ="<?php echo dibs_pw_api::api_dibs_get_formAction(); ?>">
+<form method="post" id="dibspw-payment" action ="<?php $dibs_api = new dibs_pw_api(); echo $dibs_api->api_dibs_get_formAction(); ?>">
     <div>
         <?php foreach($aDibsparmeter as $sField => $sVal) {?> 
             <input type="hidden" name="<?php echo $sField; ?>" value="<?php echo htmlentities($sVal, ENT_QUOTES, 'UTF-8'); ?>" /> 

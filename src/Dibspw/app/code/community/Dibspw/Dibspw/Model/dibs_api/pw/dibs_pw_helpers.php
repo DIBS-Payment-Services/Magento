@@ -70,8 +70,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      * @return string 
      */
     function helper_dibs_tools_url($sLink) {
-        return Mage::getUrl($sLink, array('_secure' => true));
-        
+        return Mage::getModel('core/url')-> getRouteUrl($sLink,null);
     }
     
     /**
