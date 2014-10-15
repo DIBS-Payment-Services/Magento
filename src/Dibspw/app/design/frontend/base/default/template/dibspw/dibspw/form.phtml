@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Dibs A/S
  * Dibs Payment Extension
@@ -26,7 +25,8 @@ $_code=$this->getMethodCode();
 $sHTML = '<fieldset class="form-list">
           <ul id="payment_form_'.$_code. '" style="display:none">
           <li>' . $this->__('DIBSPW_LABEL_1');
-$aLogoArray = explode(',', $paymate->getConfigData('dibspwlogos'));
+$aLogoArray = array();
+explode(',', $paymate->getConfigData('dibspwlogos'));
 $sTrusted = '';
 $sCards = '';
 $iCards = 1;
@@ -48,7 +48,26 @@ foreach($aLogoArray as $item) {
 if(!empty($sTrusted)) $sHTML .= '<br /><br />' . $sTrusted;
 if(!empty($sCards)) $sHTML .= '<br /><br />' . $this->__('DIBSPW_LABEL_2') . '<br />' . $sCards;
 
-$sHTML .= '</li></ul></fieldset>';
-
-echo $sHTML;
+$sHTML .= $paymate->getConfigData('cardlogos');
+$sHTML .= $paymate->getConfigData('netbanklogos');
+$html = $paymate->getConfigData('invoicelogos');
+$html = preg_replace('/class="dibs_brand_assets"/', "class=\"dibs_brand_assets\" id=\"dibs_invoice_container\"", $html);  
+$scriptPattern = '/(<script.*"(.*)".*"(.*)".*"(.*)".*>)/';
+ preg_match($scriptPattern, $html, $matches);
+ if( isset($matches[0]) && $matches[0] ) {
+ $src = $matches[2];
+ $data_dibs_terms_filename = $matches[3];
+ $data_terms_container_id = $matches[4];
+ $replacement = "<script type=\"text/javascript\">
+                    var js = document.createElement(\"script\"); js.src = '". $src ."';
+                    js.setAttribute('data-terms-container-id','".$data_terms_container_id."');
+                    js.setAttribute('data-dibs-terms-filename','".$data_dibs_terms_filename."');
+                    var container = document.getElementById(\"dibs_invoice_container\");
+                    container.appendChild(js);
+                </script>";
+ $html = preg_replace('/< *script.*><\/script>/', $replacement, $html);
+ }
+ $sHTML .= $html;
+ $sHTML .= '</li></ul></fieldset>';
+ echo $sHTML;
 ?>
