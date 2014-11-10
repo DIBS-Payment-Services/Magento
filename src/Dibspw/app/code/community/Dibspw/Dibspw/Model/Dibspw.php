@@ -112,6 +112,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     public function refund(Varien_Object $payment, $amount)
     {
        $result = $this->callDibsApi($payment,$amount,'RefundTransaction');
+       $errorMsg = '';
          switch ($result['status']) {
             case 'ACCEPT':
                 $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
@@ -137,6 +138,7 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     public function cancel(Varien_Object $payment) {
     
        $result = $this->callDibsApi($payment,$amount,'CancelTransaction');
+       $errorMsg = '';
        switch ($result['status']) {
            case 'ACCEPT':
                 $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);

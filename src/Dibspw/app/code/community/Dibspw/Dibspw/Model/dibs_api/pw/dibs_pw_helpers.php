@@ -228,7 +228,7 @@ class dibs_pw_helpers extends dibs_pw_helpers_cms implements dibs_pw_helpers_int
      */
     function helper_dibs_obj_etc($mOrderInfo) {
         return (object)array(
-                    'sysmod'      => 'mgn1_4_2_9',
+                    'sysmod'      => 'mgn1_4_2_9_3',
                     'callbackfix' => $this->helper_dibs_tools_url("Dibspw/Dibspw/callback"),
                     'partnerid'   => $this->helper_dibs_tools_conf('partnerid')
                 );

@@ -604,7 +604,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         // Create and set params for Http curl client
         $httpClient = new Zend_Http_Client();
         $adapter    = new Zend_Http_Client_Adapter_Curl();
-        $adapter->setCurlOption(CURLOPT_SSLVERSION, 3);
+        $adapter->setCurlOption(CURLOPT_SSLVERSION, 1);
         $adapter->setCurlOption(CURLOPT_SSL_VERIFYPEER, false);
         $httpClient->setHeaders(array('Content-Type: text/json'));
         $httpClient->setUri(self::BASE_TRANSACTION_URL."/{$action}");
