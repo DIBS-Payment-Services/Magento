@@ -136,34 +136,14 @@ class Dibspw_Dibspw_Model_Dibspw extends dibs_pw_api {
     
     
     public function cancel(Varien_Object $payment) {
-    
        $result = $this->callDibsApi($payment,$amount,'CancelTransaction');
-       $errorMsg = '';
-       switch ($result['status']) {
-           case 'ACCEPT':
-                $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);
-           break;
-     
-           case 'ERROR' :
-               $errorMsg = $this->_getHelper()->__("Error due online cancel. Use DIBS Admin panel to manually cancel this transaction" . $result['message']);
-               $this->log("Cancel ERROR. Error message:".$result['message'], $result['transaction_id']);   
-           break;      
-           
-           case 'DECLINE' :
-                $errorMsg = $this->_getHelper()->__("Cancel was DECLINED. Use DIBS Admin panel to manually cancel this transaction" . $result['message']);
-                $this->log("Cancel DECLINE. Error message:".$result['message'], $result['transaction_id']);   
-           break;
-           
-           default:
-                $errorMsg = $this->_getHelper()->__("Uncnown error was occured. Use DIBS Admin panel to manually cancel this transaction" . $result['message']);
-                $this->log("Cancel uncnown error. Error message:".$result['message'], $result['transaction_id']);   
-           break;
-        }
-         
-       if($errorMsg){
-           Mage::throwException($errorMsg);
+       $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);
+       if( $result['status'] == 'ACCEPT') {
+           Mage::getSingleton('core/session')->addSuccess("Transaction has been cancelled online");
+       } else {
+           Mage::getSingleton('core/session')->addSuccess("Transaction has not been cancelled online");
        }
-        return $this;
+       return $this;
     }
     
     
