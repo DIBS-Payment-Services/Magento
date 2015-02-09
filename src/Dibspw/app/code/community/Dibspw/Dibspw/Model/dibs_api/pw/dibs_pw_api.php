@@ -311,7 +311,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         if(abs((int)$iAmount - (int)self::api_dibs_round($mOrderInfo->amount)) >= 0.01) return 4;
         
         if((int)$mOrderInfo->currency != (int)$_POST['currency']) return 6;
-          
+         
         $sHMAC = $this->helper_dibs_tools_conf('HMAC');
         if(!empty($sHMAC) && self::api_dibs_checkMAC($sHMAC, $bUrlDecode) !== TRUE) return 7;
         
@@ -343,7 +343,7 @@ class dibs_pw_api extends dibs_pw_helpers {
      * @return int 
      */
     final public function api_dibs_action_success($mOrderInfo) {
-        $iErr = $this->api_dibs_checkMainFields($mOrderInfo);
+        $iErr = $this->api_dibs_checkMainFields($mOrderInfo, false);
         if($iErr != 1 && $iErr != 2) {
             $this->api_dibs_updateResultRow(array('success_action' => empty($iErr) ? 1 : 0,
                                                   'success_error' => $iErr));
@@ -466,6 +466,7 @@ class dibs_pw_api extends dibs_pw_helpers {
             $sData = '';
             if(isset($aData['MAC'])) unset($aData['MAC']);
             ksort($aData);
+           
             foreach($aData as $sKey => $sVal) {
                 $sData .= '&' . $sKey . '=' . (($bUrlDecode === TRUE) ? urldecode($sVal) : $sVal);
             }

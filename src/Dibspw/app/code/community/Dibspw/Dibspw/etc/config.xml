@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Dibspw_Dibspw>
-            <version>4.2.9.3</version>
+            <version>4.2.9.4</version>
             <depends>
                 <Mage_Paygate />
             </depends>
