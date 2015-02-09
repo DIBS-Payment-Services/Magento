@@ -29,7 +29,7 @@ class Dibsfw_Dibsfw_Model_System_Config_Source_Decorator
             array('value'=>'default', 'label'=>Mage::helper('adminhtml')->__('default')),
             array('value'=>'basal', 'label'=>Mage::helper('adminhtml')->__('basal')),
             array('value'=>'rich', 'label'=>Mage::helper('adminhtml')->__('rich')),
-            array('value'=>'own', 'label'=>Mage::helper('adminhtml')->__('Own decorator')),	
+            array('value'=>'responsive', 'label'=>Mage::helper('adminhtml')->__('Responsive')),	
         );
     }
 	

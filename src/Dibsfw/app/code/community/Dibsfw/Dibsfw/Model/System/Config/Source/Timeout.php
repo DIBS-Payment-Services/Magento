@@ -1,20 +1,23 @@
 <?php
 /**
- * DIBS Payment module
+ * Dibs A/S
+ * Dibs Payment Extension
  *
- * LICENSE AND USAGE INFORMATION
- * It is NOT allowed to modify, copy or re-sell this file or any
- * part of it. Please contact us by email at support@trollweb.no or
- * visit us at www.trollweb.no if you have any questions about this.
- * Trollweb is not responsible for any problems caused by this file.
+ * NOTICE OF LICENSE
  *
- * Visit us at http://www.trollweb.no today!
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
  *
- * @category   Trollweb
- * @package    Trollweb_Dibs
- * @copyright  Copyright (c) 2013 Trollweb (http://www.trollweb.no)
- * @license    Single-site License
- *
+ * @category   Payments & Gateways Extensions
+ * @package    Dibsfw_Dibsfw
+ * @author     Dibs A/S
+ * @copyright  Copyright (c) 2010 Dibs A/S. (http://www.dibs.dk/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 class Dibsfw_Dibsfw_Model_System_Config_Source_Timeout
