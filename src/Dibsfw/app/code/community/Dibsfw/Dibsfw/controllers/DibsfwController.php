@@ -69,6 +69,11 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
         $oOrder = Mage::getModel('sales/order');
 	$fields = array();
         
+      // Clear cart 
+        $quote = Mage::getModel("sales/quote")->load($session->getQuote()->getId());
+        $quote->setIsActive(false);
+        $quote->delete();
+
         $mErr = $this->oDibsModel->dibsflex_api_checkMainFields($oOrder, TRUE);
         if($mErr === FALSE) {
             $fields['successaction'] = '1';
@@ -78,18 +83,26 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
 
             $this->oDibsModel->dibsflex_helper_redirect(
                     $this->oDibsModel->dibsflex_helper_cmsurl('checkout/onepage/success'));
+
+            // local callback test
+            $server = Mage::app()->getRequest()->getServer();
+            if(isset($server['callback_url'])) {
+                 $content = file_get_contents(str_replace('php', 'txt', $server['callback_url']));
+                 $paramsArr = unserialize($content);
+                 $this->oDibsModel->dibsflex_api_postcgi($this->oDibsModel->dibsflex_helper_getReturnURLs('callback'), $paramsArr);
+            }
         }
         else {
             echo $this->oDibsModel->dibsflex_api_errCodeToMessage($mErr);
             exit();
         }
     }
-    
+
     public function callbackAction() {
         $oOrder = Mage::getModel('sales/order');
         $this->oDibsModel->dibsflex_api_callback($oOrder);
     }
-    
+
     /**
      * When a customer cancel payment from dibs.
      */
@@ -116,14 +129,8 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
                            'dibs_orderdata', $fields,'orderid='.$oOrder->getRealOrderId());
 	}
         // Give back cart to customer for new attempt to buy
-        if(Mage::getSingleton('customer/session')->isLoggedIn()) {
-          $this->oDibsModel->dibsflex_helper_redirect(
-            $this->oDibsModel->dibsflex_helper_cmsurl('sales/order/history'));
-        } else {
-          $this->oDibsModel->dibsflex_helper_redirect(
-            $this->oDibsModel->dibsflex_helper_cmsurl('checkout/cart/'));
-        }
-
+        $this->oDibsModel->dibsflex_helper_redirect(
+                $this->oDibsModel->dibsflex_helper_cmsurl('sales/order/history'));
     }
      
     function cgiapiAction() {
@@ -173,4 +180,5 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
             }
         }
     }
+
 }

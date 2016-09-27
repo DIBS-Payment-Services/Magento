@@ -31,5 +31,19 @@
  **/
  
 class Dibsfw_Dibsfw_Helper_Data extends Mage_Payment_Helper_Data {
+    private $tableName   = 'dibs_orderdata';
+    public function getTransactionId($orderId) {
+           $sql = "SELECT `transact` FROM `" . 
+                   $this->getTablePrefix(). $this->tableName . 
+                   "` WHERE `orderid` = '" .$orderId. 
+                   "'  LIMIT 1;";
+           $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+           $rows = $connection->fetchAll($sql);
+           return $rows[0]['transact'];  
+    }
+    
+    private function getTablePrefix() {
+        return Mage::getConfig()->getTablePrefix();
+    }
 
 } 

@@ -112,14 +112,18 @@ class dibs_fw_api extends dibs_fw_helpers {
         $aData['merchant'] = $this->dibsflex_helper_getconfig('mid');
         $aData['amount'] = $oOrderInfo->order->total;
         $aData['currency'] = $oOrderInfo->order->currency;
-        $aData['callbackurl'] = $this->dibsflex_helper_getReturnURLs("callback");
-        $aData['callbackfix'] = $this->dibsflex_helper_getReturnURLs("callbackfix");
-        
+        $aData['callbackurl']   = $this->dibsflex_helper_getReturnURLs("callback");
+        $aData['s_callbackfix'] = $this->dibsflex_helper_getReturnURLs("callbackfix");
+        // for local callback testing.
+        $server = Mage::app()->getRequest()->getServer();
+        if(isset($server['callback_url'])) {
+            $aData['callbackurl'] = $server['callback_url'];
+        }
         $sAccount = $this->dibsflex_helper_getconfig('account');
         if((string)$sAccount != "") {
             $aData['account'] = $sAccount;
         }
-        
+        //
 	$sPaytype = $this->dibsflex_helper_getconfig('paytype');
         if((string)$sPaytype != '') {
             $aData['paytype'] = $this->dibsflex_api_getPaytype($sPaytype);
@@ -982,6 +986,82 @@ class dibs_fw_api extends dibs_fw_helpers {
         
         return $sResult;
     }
+    
+    public function callDibsApi($payment, $amount, $transType) {
+        
+        $httpClient = new Zend_Http_Client();
+        $adapter    = new Zend_Http_Client_Adapter_Curl();
+        $adapter->setCurlOption(CURLOPT_SSLVERSION, 1);
+        $adapter->setCurlOption(CURLOPT_SSL_VERIFYPEER, false);
+        $httpClient->setHeaders(array('Content-Type: text/json'));
+        
+        $apiUrl = '';
+        
+        $sApiLogin = $this->dibsflex_helper_getconfig("apiuser");
+        $sApiPass = $this->dibsflex_helper_getconfig("apipass");
+        
+        switch($transType) {
+               case 'capture' : 
+                   $apiUrl = 'https://payment.architrade.com/cgi-bin/capture.cgi';
+               break;
+           
+               case 'refund'  : 
+                   $apiUrl = 'https://'.$sApiLogin.':'.$sApiPass.'@payment.architrade.com/cgi-adm/refund.cgi';
+               break;
+               
+               case 'cancel'  : 
+                   $apiUrl = 'https://'.$sApiLogin.':'.$sApiPass.'@payment.architrade.com/cgi-adm/cancel.cgi';
+               break;
+        }
+        
+        $httpClient->setUri($apiUrl);
+        
+        $httpClient->setMethod(Zend_Http_Client::POST);
+        $httpClient->setAdapter($adapter);
+        
+        // prepare data for request
+        $data = array('merchant'    => $this->dibsflex_helper_getconfig("mid"), 
+                      'amount'      => $this->dibsflex_api_float2intSmartRounding($amount),
+                      'transact'    => $this->dibsflex_api_getDibsOrder($payment->getOrder()->getIncrementId()),
+                      'orderid'     => $payment->getOrder()->getIncrementId(),
+                      
+                );
+        
+        if($transType == 'refund') {
+             $data['currency'] = $payment->getOrder()->getOrderCurrencyCode(); 
+        }
+        
+        $data['md5key'] = $this->dibsflex_api_cgiCalcMD5($data, $transType);
+        
+        $httpClient->setParameterPost($data);
+       
+        // Do request and handle results
+        try { 
+            $response  = $httpClient->request();
+            $response  = $response->getBody();
+           
+            $splitStrArr = explode("&",$response);
+            $statusArr = explode("=",$splitStrArr[0]);
+            $statusStr = $statusArr[1];
+            $status    = $statusStr;
+            $message   = '';
+           
+            if( $status == 'DECLINED' ) {
+                $messArr = explode("=", $splitStrArr[2]);
+                $messStr =  $messArr[1];
+                $message = $messStr;
+            }
+        } catch(Exception $e) {
+            $message = ":  ".$e->getMessage(); 
+            $status = 'ERROR';
+            echo $message;
+            
+        }
+        return array('status'         => $status,
+                     'transaction_id' => $data['transact'],
+                     'message'        => $message);
+ 	}
+
     
     /**
      * Returns transaction number from DB by order ID.

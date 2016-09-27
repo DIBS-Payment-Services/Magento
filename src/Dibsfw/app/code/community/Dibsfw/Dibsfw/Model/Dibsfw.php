@@ -71,4 +71,63 @@ class Dibsfw_Dibsfw_Model_Dibsfw extends dibs_fw_api {
         }
         return $this;
     }
+    
+    public function capture(\Varien_Object $payment, $amount) {
+        $result   = $this->callDibsApi($payment, $amount, 'capture');
+        switch ($result['status']) {
+            case 'ACCEPTED':
+                $payment->setTransactionId($result['transaction_id']);
+                $payment->setIsTransactionClosed(false);
+                $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
+                parent::capture($payment, $amount);
+            break;
+
+            case 'DECLINED':
+                $errorMsg = $this->_getHelper()->__("DIBS returned DECLINE check your payment in DIBS admin. Error msg: ".$result['message']);
+            break;
+            
+            case 'ERROR':
+                $errorMsg = $this->_getHelper()->__("Error in curl request: ".$result['message']);
+            break;
+       }
+       if($errorMsg){
+           Mage::throwException($errorMsg);
+       }
+        return $this;
+   }
+    
+    public function refund(\Varien_Object $payment, $amount) {
+        $result   = $this->callDibsApi($payment, $amount, 'refund');
+        switch ($result['status']) {
+            case 'ACCEPTED':    
+               $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
+            break;
+            case 'DECLINED':
+               $errorMsg = $this->_getHelper()->__("Refund attempt was DECLINED " . $result['message']);
+            break;
+        
+            case 'ERROR':
+                $errorMsg = $this->_getHelper()->__("Error in curl request: ".$result['message']);
+            break;
+       }
+       if($errorMsg){
+           Mage::throwException($errorMsg);
+       }
+       return $this;
+    }
+    
+    public function cancel( $payment ) {
+       $result   = $this->callDibsApi($payment, 0, 'cancel');
+      
+       $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);
+       if( $result['status'] == 'ACCEPT') {
+           Mage::getSingleton('core/session')->addSuccess("Transaction has been cancelled online");
+       } else {
+           Mage::getSingleton('core/session')->addSuccess("Transaction has not been cancelled online");
+       }
+      
+       return $this;
+    }
+    
+
 }

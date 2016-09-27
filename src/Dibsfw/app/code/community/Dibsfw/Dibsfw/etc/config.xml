@@ -24,13 +24,25 @@
 <config>
     <modules>
         <Dibsfw_Dibsfw>
-            <version>3.1.2</version>
+            <version>3.2.1</version>
             <depends>
                 <Mage_Paygate />
             </depends>
         </Dibsfw_Dibsfw>
     </modules>
     <global>
+      <events> 
+        <order_cancel_after>
+            <observers>
+                <dibsfw>
+                   <type>singleton</type>
+                   <class>dibsfw/observer</class>
+                   <method>order_cancel_after</method>
+                 </dibsfw>
+            </observers>
+         </order_cancel_after>
+       </events>
+
     	<blocks>
             <dibsfw>
             	<class>Dibsfw_Dibsfw_Block</class>
@@ -49,6 +61,11 @@
                     </api_debug>
                 </entities>
             </dibsfw_mysql4>
+            <sales>
+                 <rewrite>
+                    <service_quote>Dibsfw_Dibsfw_Model_Service_Quote</service_quote>
+                 </rewrite>  
+            </sales>
     	</models>
     	<helpers>
             <dibsfw>
