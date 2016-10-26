@@ -69,33 +69,38 @@ class Dibsfw_Dibsfw_DibsfwController extends Mage_Core_Controller_Front_Action {
         $oOrder = Mage::getModel('sales/order');
 	$fields = array();
         
-      // Clear cart 
-        $quote = Mage::getModel("sales/quote")->load($session->getQuote()->getId());
-        $quote->setIsActive(false);
-        $quote->delete();
+        if(Mage::app()->getRequest()->isGet()) {
+          $this->oDibsModel->dibsflex_helper_redirect(
+                        $this->oDibsModel->dibsflex_helper_cmsurl('checkout/onepage/success'));
+        } else {
+          // Clear cart
+            $quote = Mage::getModel("sales/quote")->load($session->getQuote()->getId());
+            $quote->setIsActive(false);
+            $quote->delete();
 
-        $mErr = $this->oDibsModel->dibsflex_api_checkMainFields($oOrder, TRUE);
-        if($mErr === FALSE) {
-            $fields['successaction'] = '1';
-            $write = Mage::getSingleton('core/resource')->getConnection('core_write');
-            $write->update($this->oDibsModel->dibsflex_helper_getdbprefix() . 
-                           'dibs_orderdata', $fields,'orderid='.$oOrder->getRealOrderId());
+            $mErr = $this->oDibsModel->dibsflex_api_checkMainFields($oOrder, TRUE);
+            if($mErr === FALSE) {
+                $fields['successaction'] = '1';
+                $write = Mage::getSingleton('core/resource')->getConnection('core_write');
+                $write->update($this->oDibsModel->dibsflex_helper_getdbprefix() .
+                               'dibs_orderdata', $fields,'orderid='.$oOrder->getRealOrderId());
 
-            $this->oDibsModel->dibsflex_helper_redirect(
-                    $this->oDibsModel->dibsflex_helper_cmsurl('checkout/onepage/success'));
+                $this->oDibsModel->dibsflex_helper_redirect(
+                        $this->oDibsModel->dibsflex_helper_cmsurl('checkout/onepage/success'));
 
-            // local callback test
-            $server = Mage::app()->getRequest()->getServer();
-            if(isset($server['callback_url'])) {
-                 $content = file_get_contents(str_replace('php', 'txt', $server['callback_url']));
-                 $paramsArr = unserialize($content);
-                 $this->oDibsModel->dibsflex_api_postcgi($this->oDibsModel->dibsflex_helper_getReturnURLs('callback'), $paramsArr);
+                // local callback test
+                $server = Mage::app()->getRequest()->getServer();
+                if(isset($server['callback_url'])) {
+                     $content = file_get_contents(str_replace('php', 'txt', $server['callback_url']));
+                     $paramsArr = unserialize($content);
+                     $this->oDibsModel->dibsflex_api_postcgi($this->oDibsModel->dibsflex_helper_getReturnURLs('callback'), $paramsArr);
+                }
             }
-        }
-        else {
-            echo $this->oDibsModel->dibsflex_api_errCodeToMessage($mErr);
-            exit();
-        }
+            else {
+                echo $this->oDibsModel->dibsflex_api_errCodeToMessage($mErr);
+                exit();
+            }
+       }
     }
 
     public function callbackAction() {

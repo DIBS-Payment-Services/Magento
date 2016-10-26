@@ -168,7 +168,7 @@ class dibs_fw_helpers extends dibs_fw_helpers_cms implements dibs_fw_helpers_int
     }
     
     function dibsflex_helper_modVersion() {
-        return 'mgn1_3.2.1';
+        return 'mgn1_3.2.2';
     }
 }
 ?>
