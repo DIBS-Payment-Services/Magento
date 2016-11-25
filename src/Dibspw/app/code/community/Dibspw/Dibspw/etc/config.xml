@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Dibspw_Dibspw>
-            <version>4.2.9.4</version>
+            <version>4.2.9.5</version>
             <depends>
                 <Mage_Paygate />
             </depends>
@@ -72,21 +72,12 @@
             <dibspw>
     		<class>Dibspw_Dibspw_Model</class>
                 <resourceModel>dibspw_mysql4</resourceModel>
-            
-            </dibspw>
-            <dibspw_mysql4>
-                <class>Dibspw_Dibspw_Model_Mysql4</class>
-                <entities>
-                    <api_debug>
-                        <table>dibspw_api_debug</table>
-                    </api_debug>
-                </entities>
-            </dibspw_mysql4>
-             <sales>
+           </dibspw>
+           <sales>
                  <rewrite>
                     <service_quote>Dibspw_Dibspw_Model_Service_Quote</service_quote>
-                 </rewrite>  
-             </sales>
+                 </rewrite>
+           </sales>
       </models>
     	<helpers>
     		<dibspw>
@@ -94,14 +85,6 @@
     		</dibspw>
     	</helpers>
         <resources>
-            <dibspw_setup>
-                <setup>
-                    <module>Dibspw_Dibspw</module>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </dibspw_setup>
             <dibspw_write>
                 <connection>
                     <use>core_write</use>
@@ -124,7 +107,6 @@
                 </args>
             </Dibspw>
         </routers>
-        
        <layout>
             <updates>
                 <dibspw>
@@ -132,13 +114,11 @@
                 </dibspw>
             </updates>
         </layout>
-    </frontend>
-    <frontend>
         <translate>
             <modules>
                 <Mage_Dibspw>
                     <files>
-                        <default>Mage_Dibspw.csv</default>
+                        <default>Dibspw_Dibspw.csv</default>
                     </files>
                 </Mage_Dibspw>
             </modules>
@@ -149,12 +129,24 @@
             <modules>
                 <Mage_Dibspw>
                     <files>
-                        <default>Mage_Dibspw.csv</default>
+                        <default>Dibspw_Dibspw.csv</default>
                     </files>
                 </Mage_Dibspw>
             </modules>
         </translate>
     </adminhtml>
+    <crontab>
+        <jobs>
+            <dibspw_timeout>
+                <schedule>
+                    <cron_expr>*/1 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>dibspw/dibspw::cancelOrdersAfterTimeout</model>
+                </run>
+            </dibspw_timeout>
+        </jobs>
+    </crontab>
     <default>
         <payment>
             <Dibspw>

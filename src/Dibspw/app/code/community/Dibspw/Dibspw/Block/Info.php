@@ -29,6 +29,7 @@ class Dibspw_Dibspw_Block_Info extends Mage_Payment_Block_Info {
         
     public function __construct() {
         parent::__construct();
+        $this->setTemplate('dibspw/payment/info/payment-block.phtml');
     }
     
     
@@ -46,12 +47,12 @@ class Dibspw_Dibspw_Block_Info extends Mage_Payment_Block_Info {
     }
     
     protected function _prepareSpecificInformation($transport = null) {
-	$oDataObj = parent::_prepareSpecificInformation();
+        $oDataObj = parent::_prepareSpecificInformation();
         $aData = ($this->getIsSecureMode() === FALSE) ? 
                  $this->getMethod()->cms_dibs_getAdminOrderInfo() :
                  $this->getMethod()->cms_dibs_getOrderInfo();
         foreach($aData as $sKey => $sVal) $oDataObj->setData($sKey, $sVal);
-	return $oDataObj;
+ 	return $oDataObj;
     }
    
 }

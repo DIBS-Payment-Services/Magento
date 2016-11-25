@@ -100,8 +100,7 @@ class dibs_pw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
                             $res[Mage::helper('dibspw')->__('DIBSPW_LABEL_17')] = $row['ext']['enrolled'];
                         }
 
-                        $res[Mage::helper('dibspw')->__('DIBSPW_LABEL_25')] = Mage::helper('dibspw')->__('DIBSPW_LABEL_18') . 
-                                ': <a href="https://payment.architrade.com/admin/">https://payment.architrade.com/admin/</a>';
+                        $res[Mage::helper('dibspw')->__('DIBSPW_LABEL_25')] = Mage::helper('dibspw')->__('DIBSPW_LABEL_18');
                                 
                         
                         if(!empty($row['acquirerFirstName'])) {

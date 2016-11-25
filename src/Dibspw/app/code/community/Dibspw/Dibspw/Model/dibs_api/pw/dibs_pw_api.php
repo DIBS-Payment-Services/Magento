@@ -34,13 +34,13 @@ class dibs_pw_api extends dibs_pw_helpers {
      * 
      * @var string 
      */
-    private static $sFormAction = 'https://sat1.dibspayment.com/dibspaymentwindow/entrypoint';
+    private static $sFormAction = 'https://payment.dibspayment.com/dpw/entrypoint';
     
 	/*
 	 * Dibs Payment Window Base Api URL
 	 * 
 	 */
-      const BASE_TRANSACTION_URL = "https://api.dibspayment.com/merchant/v1/JSON/Transaction";
+      const BASE_TRANSACTION_URL = "https://v2.api.dibspayment.com/merchant/v1/JSON/Transaction";
 	
     /**
      * Dictionary of DIBS response to self::$sDibsTable table fields relations.
@@ -182,6 +182,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         $aData['acceptreturnurl'] = $this->helper_dibs_tools_url($oOrder->urls->acceptreturnurl);
         $aData['cancelreturnurl'] = $this->helper_dibs_tools_url($oOrder->urls->cancelreturnurl);
         $aData['callbackurl']     = $oOrder->urls->callbackurl;
+        $aData['s_callbackfix']   = $this->helper_dibs_tools_url($aData['callbackurl']);
         if(strpos($aData['callbackurl'], '/5c65f1600b8_dcbf.php') === FALSE) {
             $aData['callbackurl'] = $this->helper_dibs_tools_url($aData['callbackurl']);
         }
@@ -311,7 +312,7 @@ class dibs_pw_api extends dibs_pw_helpers {
         if(abs((int)$iAmount - (int)self::api_dibs_round($mOrderInfo->amount)) >= 0.01) return 4;
         
         if((int)$mOrderInfo->currency != (int)$_POST['currency']) return 6;
-         
+          
         $sHMAC = $this->helper_dibs_tools_conf('HMAC');
         if(!empty($sHMAC) && self::api_dibs_checkMAC($sHMAC, $bUrlDecode) !== TRUE) return 7;
         
@@ -466,7 +467,6 @@ class dibs_pw_api extends dibs_pw_helpers {
             $sData = '';
             if(isset($aData['MAC'])) unset($aData['MAC']);
             ksort($aData);
-           
             foreach($aData as $sKey => $sVal) {
                 $sData .= '&' . $sKey . '=' . (($bUrlDecode === TRUE) ? urldecode($sVal) : $sVal);
             }
@@ -598,14 +598,16 @@ class dibs_pw_api extends dibs_pw_helpers {
     public function callDibsApi ($payment , $amount, $action) {
   
         // We must have HMAC code for every transaction
-        if(!$hmacCode = $this->helper_dibs_tools_conf('HMAC')) {
-            Mage::throwException('Error with HMAC code, please check HMAC code in module config');
-        }
+        $hmacCode = $this->helper_dibs_tools_conf('HMAC');
         
+        if(!$hmacCode && ($action != 'CancelTransaction')) {
+            Mage::throwException(Mage::helper('dibspw')->__('DIBSPW_LABEL_40'));
+        }
+       
         // Create and set params for Http curl client
         $httpClient = new Zend_Http_Client();
         $adapter    = new Zend_Http_Client_Adapter_Curl();
-        $adapter->setCurlOption(CURLOPT_SSLVERSION, 1);
+        $adapter->setCurlOption(CURLOPT_SSLVERSION, 4);
         $adapter->setCurlOption(CURLOPT_SSL_VERIFYPEER, false);
         $httpClient->setHeaders(array('Content-Type: text/json'));
         $httpClient->setUri(self::BASE_TRANSACTION_URL."/{$action}");
@@ -617,7 +619,8 @@ class dibs_pw_api extends dibs_pw_helpers {
                       'amount'        => self::api_dibs_round($amount),
                       'transactionId' => self::getTransactionId($payment->
                                                getOrder()->getRealOrderId()));
-                      
+        
+      
         // We don't need to include amount in a MAC 
         // calculation in a case of Cancel transaction    
         if( $action == 'CancelTransaction') {
@@ -632,6 +635,8 @@ class dibs_pw_api extends dibs_pw_helpers {
             $phpNative = Zend_Json::decode($response->getBody());
             $status    = $phpNative['status'];
             $message   = $phpNative['declineReason'];
+            
+            
         } catch(Exception $e) {
             $message = ":  ".$e->getMessage(); 
         }

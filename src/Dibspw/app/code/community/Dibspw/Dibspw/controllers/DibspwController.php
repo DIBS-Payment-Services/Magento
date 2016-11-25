@@ -197,4 +197,5 @@ class Dibspw_Dibspw_DibspwController extends Mage_Core_Controller_Front_Action {
             }
         }
     }
+    
 }
