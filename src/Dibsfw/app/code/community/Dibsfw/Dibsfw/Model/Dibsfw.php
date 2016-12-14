@@ -73,13 +73,14 @@ class Dibsfw_Dibsfw_Model_Dibsfw extends dibs_fw_api {
     }
     
     public function capture(\Varien_Object $payment, $amount) {
-        $result   = $this->callDibsApi($payment, $amount, 'capture');
+        $correctedAmount = Mage::helper('core')->currency($amount, false, false);
+        $result = $this->callDibsApi($payment, $correctedAmount, 'capture');
         switch ($result['status']) {
             case 'ACCEPTED':
                 $payment->setTransactionId($result['transaction_id']);
                 $payment->setIsTransactionClosed(false);
                 $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
-                parent::capture($payment, $amount);
+                parent::capture($payment, $correctedAmount);
             break;
 
             case 'DECLINED':
@@ -97,7 +98,8 @@ class Dibsfw_Dibsfw_Model_Dibsfw extends dibs_fw_api {
    }
     
     public function refund(\Varien_Object $payment, $amount) {
-        $result   = $this->callDibsApi($payment, $amount, 'refund');
+        $correctedAmount = Mage::helper('core')->currency($amount, false, false);
+        $result = $this->callDibsApi($payment, $correctedAmount, 'refund');
         switch ($result['status']) {
             case 'ACCEPTED':    
                $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
