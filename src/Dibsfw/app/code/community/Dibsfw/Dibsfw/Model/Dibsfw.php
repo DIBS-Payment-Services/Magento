@@ -118,7 +118,7 @@ class Dibsfw_Dibsfw_Model_Dibsfw extends dibs_fw_api {
        return $this;
     }
     
-    public function cancel( $payment ) {
+    public function cancel(\Varien_Object $payment) {
        $result   = $this->callDibsApi($payment, 0, 'cancel');
       
        $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_VOID);
