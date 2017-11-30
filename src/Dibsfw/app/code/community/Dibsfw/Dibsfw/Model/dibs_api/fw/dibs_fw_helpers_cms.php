@@ -7,7 +7,7 @@ class dibs_fw_helpers_cms extends Mage_Payment_Model_Method_Abstract {
     protected $_canUseForMultishipping = false;
     protected $_canCapture = true;
     protected $_canRefund  = true;
-
+    protected $_canRefundInvoicePartial = true;
     
     
     public function cms_dibs_getOrderInfo() {
