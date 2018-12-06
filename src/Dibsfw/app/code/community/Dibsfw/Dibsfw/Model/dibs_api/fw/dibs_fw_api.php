@@ -27,7 +27,9 @@ class dibs_fw_api extends dibs_fw_helpers {
                 foreach($aAdditional as $sKey => $sVal) $aData[$sKey] = $sVal;
             }
         }
-        array_walk($aData, create_function('&$val', '$val = trim($val);'));
+        array_walk($aData, function(&$val) {
+            $val = trim($val);
+        });
         $sMD5 = $this->dibsflex_api_calcMD5($aData);
         if($sMD5 != "") $aData['md5key'] = $sMD5;
         
